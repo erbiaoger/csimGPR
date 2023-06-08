@@ -1,0 +1,7 @@
+matplotlib
+numpy
+scipy 
+numba
+scikit-image
+pyevtk
+Pmw
