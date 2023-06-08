@@ -1,0 +1,3 @@
+[submodule "csimGPR/irlib"]
+	path = csimGPR/irlib
+	url = https://github.com/njwilson23/irlib
