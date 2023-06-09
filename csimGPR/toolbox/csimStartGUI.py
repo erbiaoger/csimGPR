@@ -8,6 +8,14 @@ import os
 import matplotlib.image as im
 from scipy import signal
 
+import sys
+import os
+ 
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, relative_path)
+
 def showcsimGPR(a,dir_path,widfac,highfac,fontfac):
     '''
     Creates the csimGPR screen shown when starting csimGPR GUI for 
@@ -82,9 +90,9 @@ def showcsimGPR(a,dir_path,widfac,highfac,fontfac):
     a.text(50,-12000,'Version 1.0.12',fontdict=fontver)
    
     # add UA logo
-    filename1=os.path.join(dir_path,'toolbox','csimGPRdat',
+    filename1=os.path.join(dir_path,'startGUIdat',
                            'JLU.jpg')
-    ua = im.imread(filename1)
+    ua = im.imread(resource_path(filename1))
     #yanchor = -24500
     #yheight = 10000*0.9
     yanchor = -24000
@@ -99,7 +107,7 @@ def showcsimGPR(a,dir_path,widfac,highfac,fontfac):
              interpolation='spline36')
 
     # # add UA words
-    # filename1=os.path.join(dir_path,'toolbox','csimGPRdat',
+    # filename1=os.path.join(dir_path,'startGUIdat',
     #                         'UA-StackedNameplate.png')
     # ua = im.imread(filename1)
     # #yanchor = -24500
@@ -117,9 +125,9 @@ def showcsimGPR(a,dir_path,widfac,highfac,fontfac):
     
     
     # Add NSF logo
-    filename2=os.path.join(dir_path,'toolbox','csimGPRdat',
+    filename2=os.path.join(dir_path,'startGUIdat',
                            'ditan.jpeg')
-    nsf = im.imread(filename2)
+    nsf = im.imread(resource_path(filename2))
     yanchor = -25000
     yheight = 10000
     xanchor = -5

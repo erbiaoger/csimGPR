@@ -16,7 +16,7 @@ import csimGPR.toolbox.gprpyTools as tools
 import csimGPR.toolbox.Robust_NMF as Robust_NMF
 from csimGPR.toolbox.my_stran import st
 from csimGPR.toolbox.filters import butterworth
-from csimGPR.kirchhoffmigration.kirchhoffmigration import full_migration, taper
+#from csimGPR.kirchhoffmigration.kirchhoffmigration import full_migration, taper
 
 try:
     import csimGPR.irlib.external.mig_fk as mig_fk

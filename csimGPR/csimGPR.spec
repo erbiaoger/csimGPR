@@ -8,7 +8,7 @@ a = Analysis(
     ['__main__.py'],
     pathex=['csimGPR/csimGPR.py', 'csimGPR/csimGPRGUI.py'],
     binaries=[],
-    datas=[('csimGPR/startGUIdat/*', 'csimGPR/startGUIdat/')],
+    datas=[('./csimGPR/toolbox/csimGPRdat/', './csimGPR/toolbox/csimGPRdat/')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
