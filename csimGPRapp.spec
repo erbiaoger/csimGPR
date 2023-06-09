@@ -41,10 +41,11 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+    icon=['csimGPR/startGUIdat/AnyConv.com__csimGPR_logo.icns'],
 )
 app = BUNDLE(
     exe,
     name='csimGPRapp.app',
-    icon=None,
+    icon='csimGPR/startGUIdat/AnyConv.com__csimGPR_logo.icns',
     bundle_identifier=None,
 )
