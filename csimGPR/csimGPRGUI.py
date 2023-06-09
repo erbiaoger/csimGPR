@@ -330,6 +330,7 @@ class GPRPyApp:
             text="科希霍夫偏移", fg="black",
             command=lambda : [self.kirchhoffmigration(proj),
                               self.plotProfileData(proj,fig=fig,a=a,canvas=canvas)])
+            #command=lambda : [])
         kfmigrationButton.config(height = 1, width = 2*halfwid)         
         kfmigrationButton.grid(row=6, column=rightcol, sticky='nsew',columnspan=colsp)
         self.balloon.bind(kfmigrationButton,

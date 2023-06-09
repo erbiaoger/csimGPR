@@ -83,7 +83,7 @@ def showcsimGPR(a,dir_path,widfac,highfac,fontfac):
    
     # add UA logo
     filename1=os.path.join(dir_path,'toolbox','csimGPRdat',
-                           'A_Square_Logo_4c.png')
+                           'JLU.jpg')
     ua = im.imread(filename1)
     #yanchor = -24500
     #yheight = 10000*0.9
@@ -118,7 +118,7 @@ def showcsimGPR(a,dir_path,widfac,highfac,fontfac):
     
     # Add NSF logo
     filename2=os.path.join(dir_path,'toolbox','csimGPRdat',
-                           'NSF_4-Color_bitmap_Logo.png')
+                           'ditan.jpeg')
     nsf = im.imread(filename2)
     yanchor = -25000
     yheight = 10000
@@ -126,7 +126,7 @@ def showcsimGPR(a,dir_path,widfac,highfac,fontfac):
     figsize = a.figure.get_size_inches()
     figratio = figsize[0]/figsize[1]
     ratio = a.get_data_ratio()*figratio
-    xwidth = yheight/ratio
+    xwidth = yheight/ratio 
     a.imshow(nsf, aspect=0.0016,extent=(xanchor, xanchor+xwidth,  #aspect='auto'
                                          yanchor, yanchor+yheight),
              interpolation='spline36')
@@ -134,8 +134,8 @@ def showcsimGPR(a,dir_path,widfac,highfac,fontfac):
              'color':  'black',
              'size': 12*fontfac}
 			 #'size': 10.26}
-    a.text(-5,-27000,'EAR-1550732',fontdict=font2)
-    a.text(-5,-29000,'EAR-2022671',fontdict=font2)
+    #a.text(-5,-27000,'EAR-1550732',fontdict=font2)
+    #a.text(-5,-29000,'EAR-2022671',fontdict=font2)
 
     a.text(30,-29000,'Please cite https://erbiaoger.site',fontdict=font2)
     a.set_url(['https://doi.org/10.1190/tle39050332.1'])

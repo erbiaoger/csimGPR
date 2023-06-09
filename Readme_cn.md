@@ -1,8 +1,7 @@
 <h1 align="center">
-  <img src="https://raw.githubusercontent.com/erbiaoger/PicGo/main/20230608202306081958083.png" alt="csimGPR" width="600">
-      <br>GPRlab<br>
+  <img src="https://raw.githubusercontent.com/erbiaoger/PicGo/main/20230608202306091328187.png" alt="csimGPR" width="600">
+      <br>csimGPR<br>
 </h1>
-
 
 <h4 align="center">csimGPR 月球及火星次表层结构解释软件.</h4>
 

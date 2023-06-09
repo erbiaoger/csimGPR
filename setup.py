@@ -1,5 +1,3 @@
-import setuptools
-
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
@@ -27,7 +25,9 @@ setuptools.setup(
                             'toolbox/StartGUIdat/*.png',
                             'toolbox/*.py',
                             'irlib/*.py',
-                            'irlib/external/*.py']},
+                            'irlib/external/*.py',
+                            'kirchhoff/*.py',
+                            ]},
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
