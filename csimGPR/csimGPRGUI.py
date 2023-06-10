@@ -8,7 +8,7 @@
 
 import sys
 import os
-#import Pmw
+import Pmw
 import scipy.interpolate as interp
 import numpy as np
 from scipy import signal
@@ -61,8 +61,8 @@ class GPRPyApp:
         master.title("CSIM - 月球及火星次表层结构解译")
         
         # Variables specific to GUI
-        #self.balloon = Pmw.Balloon()
-        self.balloon = tk.Label(master, text="balloon", height = 1, width = 2*halfwid)
+        self.balloon = Pmw.Balloon()
+        #self.balloon = tk.Label(master, text="balloon", height = 1, width = 2*halfwid)
         self.picking = False       
         self.delimiter = None
         self.grid = False
