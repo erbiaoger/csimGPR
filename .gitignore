@@ -1,3 +1,4 @@
 examples/test_LPR/
 build/
 dist/
+*.spec
