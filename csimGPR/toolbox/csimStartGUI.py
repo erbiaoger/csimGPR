@@ -1,3 +1,5 @@
+# csimStartGUI.py 用于绘制csimGPR的启动界面
+
 import csimGPR.csimGPR as gp
 import numpy as np
 import matplotlib.pyplot as plt
@@ -87,7 +89,7 @@ def showcsimGPR(a,dir_path,widfac,highfac,fontfac):
         'size': 13.5*fontfac
         #'size': 45.6
         }
-    a.text(50,-12000,'Version 1.0.12',fontdict=fontver)
+    a.text(50,-12000,'Version 1.0.0',fontdict=fontver)
    
     # add UA logo
     filename1=os.path.join(dir_path,'startGUIdat',
@@ -146,7 +148,7 @@ def showcsimGPR(a,dir_path,widfac,highfac,fontfac):
     #a.text(-5,-29000,'EAR-2022671',fontdict=font2)
 
     a.text(30,-29000,'Please cite https://erbiaoger.site',fontdict=font2)
-    a.set_url(['https://doi.org/10.1190/tle39050332.1'])
+    a.set_url(['https://doi.org'])
 
     
     # Add name/email

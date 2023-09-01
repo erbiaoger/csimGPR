@@ -8,7 +8,7 @@ a = Analysis(
     ['__main__.py'],
     pathex=['csimGPR/csimGPR.py', 'csimGPR/csimGPRGUI.py'],
     binaries=[],
-    datas=[('csimGPR/startGUIdat/*', 'csimGPR/startGUIdat/'), ('/Users/zhiyuzhang/miniconda3/lib/python3.10/site-packages/Pmw', 'Pmw')],
+    datas=[('csimGPR/startGUIdat/*', 'csimGPR/startGUIdat/'), ('c:\\users\\zhangzhiyu\\miniconda3\\lib\\site-packages\\Pmw\\', 'Pmw'), ('examples\\*', 'examples/')],
     hiddenimports=['Pmw'],
     hookspath=[],
     hooksconfig={},
@@ -35,17 +35,11 @@ exe = EXE(
     upx=True,
     upx_exclude=[],
     runtime_tmpdir=None,
-    console=False,
+    console=True,
     disable_windowed_traceback=False,
     argv_emulation=False,
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=['csimGPR/startGUIdat/AnyConv.com__csimGPR_logo.icns'],
-)
-app = BUNDLE(
-    exe,
-    name='csimGPRapp.app',
-    icon='csimGPR/startGUIdat/AnyConv.com__csimGPR_logo.icns',
-    bundle_identifier=None,
+    icon=['csimGPR\\startGUIdat\\AnyConv.com__csimGPR_logo.icns'],
 )

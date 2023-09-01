@@ -1,10 +1,4 @@
-# import sys
-# if sys.version_info[0] < 3:
-#     import Tkinter as tk
-#     from Tkinter import filedialog as fd
-# else:
-#     import tkinter as tk
-#     from tkinter import filedialog as fd
+# csimGPRGUI.py 用于csimGPR的图形用户界面
 
 import sys
 import os
@@ -12,10 +6,13 @@ import Pmw
 import scipy.interpolate as interp
 import numpy as np
 from scipy import signal
+from scipy.interpolate import interp1d
+
 import tkinter as tk
 from tkinter import filedialog as fd
 from tkinter import simpledialog as sd
 from tkinter import messagebox as mesbox
+
 import matplotlib as mpl
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
@@ -29,7 +26,6 @@ rightcol=9
 halfwid=6
 figrowsp=21+1
 figcolsp=9
-
 
 class GPRPyApp:
     '''
@@ -87,8 +83,12 @@ class GPRPyApp:
         canvas.get_tk_widget().grid(row=2,column=0,columnspan=figcolsp,rowspan=figrowsp,sticky='nsew')
 
         canvas.draw() 
+
+        self.initLoadData(proj)
+        #self.plotProfileData(proj,fig=fig,a=a,canvas=canvas)
                
-        
+        self.curves = {}
+        self.leijia = 0
 
         ## Visualization Buttons              
 
@@ -325,17 +325,26 @@ class GPRPyApp:
         self.balloon.bind(cutButton,
                           "将数据修剪到所需的沿剖面范围。") 
 
-        # kirchhoffmigration
-        kfmigrationButton = tk.Button(
+        # # kirchhoffmigration
+        # kfmigrationButton = tk.Button(
+        #     text="科希霍夫偏移", fg="black",
+        #     # command=lambda : [self.kirchhoffmigration(proj),
+        #     #                   self.plotProfileData(proj,fig=fig,a=a,canvas=canvas)])
+        #     command=lambda : [])
+        # kfmigrationButton.config(height = 1, width = 2*halfwid)         
+        # kfmigrationButton.grid(row=6, column=rightcol, sticky='nsew',columnspan=colsp)
+        # self.balloon.bind(kfmigrationButton,
+        #                   "Trace-wise 低切滤波器。 \n"
+        #                   "从每个轨迹中删除所选窗口宽度的运行平均值。")
+        
+        kirchhoffmigrationButton = tk.Button(
             text="科希霍夫偏移", fg="black",
-            # command=lambda : [self.kirchhoffmigration(proj),
-            #                   self.plotProfileData(proj,fig=fig,a=a,canvas=canvas)])
-            command=lambda : [])
-        kfmigrationButton.config(height = 1, width = 2*halfwid)         
-        kfmigrationButton.grid(row=6, column=rightcol, sticky='nsew',columnspan=colsp)
-        self.balloon.bind(kfmigrationButton,
-                          "Trace-wise 低切滤波器。 \n"
-                          "从每个轨迹中删除所选窗口宽度的运行平均值。")
+            command=lambda : [self.kirchhoffmigration(proj),
+                            self.plotProfileData(proj,fig=fig,a=a,canvas=canvas)])
+        kirchhoffmigrationButton.config(height = 1, width = 2*halfwid)
+        kirchhoffmigrationButton.grid(row=6, column=rightcol, sticky='nsew',columnspan=colsp)
+        self.balloon.bind(kirchhoffmigrationButton,
+                            "绘制曲线。")
         
         # Dewow
         DewowButton = tk.Button(
@@ -453,7 +462,7 @@ class GPRPyApp:
                           "并设置速度。")
         
 
-        # Migration Button
+        # Migration Button # TODO
         migButton = tk.Button(
             text="fk 偏移", fg="black",
             command=lambda : [self.fkMigration(proj),
@@ -526,20 +535,35 @@ class GPRPyApp:
                           "以选择的分辨率将当前可见的图形保存为 PDF。\n"
                           "如果当前图形上有双曲线，则双曲线也会出现在\n"
                           "打印的图形上。")
+        
+        # getPoint
+        getPointButton = tk.Button(
+            text="getPoint", fg="black",
+            command=lambda : self.getPoint(proj, fig,a,canvas))
+        getPointButton.config(height = 1, width = 2*halfwid)
+        getPointButton.grid(row=20, column=rightcol, sticky='nsew',columnspan=colsp)
+        self.balloon.bind(getPointButton,
+                            "使用Diffrapy软件包进行处理。")
+        
+        plotCurvesButton = tk.Button(
+            text="plot curves", fg="black",
+            command=lambda : self.plotCurves(proj,a,canvas))
+        plotCurvesButton.config(height = 1, width = 2*halfwid)
+        plotCurvesButton.grid(row=21, column=rightcol, sticky='nsew',columnspan=colsp)
+        self.balloon.bind(plotCurvesButton,
+                            "绘制曲线。")
+        
 
 
     def stspectrum(self, proj):
+        
         print("\nDoing stspectrum...")
         f_min = sd.askfloat("输入","s变换滤波器的下截止频率 [MHz]")
         f_max = sd.askfloat("输入","s变换滤波器的上截止频率 [MHz]")
-        data_st = proj.stspectrum(f_min, f_max)
 
         newroot = tk.Tk(); newroot.columnconfigure(1, weight=1); newroot.rowconfigure(1, weight=1); newroot.title('st 时频谱')
-        fig = Figure(figsize=(12, 10)); fig.clear(); 
-
-        a = fig.add_subplot(111); a.clear()
-        a.imshow(data_st, aspect='auto', cmap='jet')
-        a.set_ylabel("Time [ns]"); a.set_xlabel("trace")
+        fig = Figure(figsize=(12, 10)); fig.clear(); a = fig.add_subplot(111); a.clear()
+        a = proj.stspectrum(a, f_min, f_max)
 
         fig.tight_layout()
         canvas = FigureCanvasTkAgg(fig, master=newroot)
@@ -585,7 +609,7 @@ class GPRPyApp:
         c.set_xlabel('Time [s]'); c.set_ylabel('Frequency [Hz]'); c.set_title('Time-Frequency Diagram')
 
         d = fig.add_subplot(224); d.clear()
-        d.imshow(sf, extent=[0, np.max(t), 0, np.max(xf)], aspect='auto', cmap='jet')
+        d.imshow(sf, extent=[0, np.max(t), np.max(xf), 0], aspect='auto', cmap='jet')
         d.set_xlabel('Time [ns]'); d.set_ylabel('Frequency [MHz]'); d.set_title('st time-frequency diagram')
 
         fig.tight_layout()
@@ -801,6 +825,7 @@ class GPRPyApp:
         filename = fd.askopenfilename( filetypes= (("All", "*.*"),
                                                    ('mat', '*.mat'),
                                                    ('2A', '*.2A'),
+                                                   ('2B', '*.2B'),
                                                    ("GPRPy (.gpr)", "*.gpr"),
                                                    ("Sensors and Software (.DT1)", "*.DT1"),
                                                    ("GSSI (.DZT)", "*.DZT"),
@@ -820,6 +845,47 @@ class GPRPyApp:
             # Just in case someone presses undo before changing yrange        
             self.prevyrng=self.yrng    
             print("导入 " + filename + " 成功")
+            
+    def loadDataMars(self,proj):
+        filename = fd.askopenfilename( filetypes= (("All", "*.*"),
+                                                   ('mat', '*.mat'),
+                                                   ('2A', '*.2A'),
+                                                   ('2B', '*.2B'),
+                                                   ("GPRPy (.gpr)", "*.gpr"),
+                                                   ("Sensors and Software (.DT1)", "*.DT1"),
+                                                   ("GSSI (.DZT)", "*.DZT"),
+                                                   ("BSQ header","*.GPRhdr"),
+                                                   ("MALA header","*.rad")))
+        if filename:
+            proj.importdataMars(filename=filename)
+            self.xrng = [np.min(proj.profilePos),np.max(proj.profilePos)]
+            if proj.depth is None:
+                self.yrng = [0,np.max(proj.twtt)]
+            else:
+                if proj.maxTopo is None:
+                    self.yrng = [0,np.max(proj.depth)]
+                else:
+                    self.yrng = [proj.maxTopo-np.max(proj.depth), proj.maxTopo]
+            self.asp=None
+            # Just in case someone presses undo before changing yrange        
+            self.prevyrng=self.yrng    
+            print("导入 " + filename + " 成功")
+
+    def initLoadData(self,proj):
+        filename = 'examples/CE4_GRAS_LPR-2A_SCI_N_20190104004000_20190109213900_0001_A.2A'
+        proj.importdata(filename=filename)
+        self.xrng = [np.min(proj.profilePos),np.max(proj.profilePos)]
+        if proj.depth is None:
+            self.yrng = [0,np.max(proj.twtt)]
+        else:
+            if proj.maxTopo is None:
+                self.yrng = [0,np.max(proj.depth)]
+            else:
+                self.yrng = [proj.maxTopo-np.max(proj.depth), proj.maxTopo]
+        self.asp=None
+        # Just in case someone presses undo before changing yrange        
+        self.prevyrng=self.yrng    
+
 
         
     def saveData(self,proj):        
@@ -853,7 +919,6 @@ class GPRPyApp:
         if filename != '':
             proj.writeHistory(filename)
             print("Wrote script to " + filename)
-
 
     def plotProfileData(self,proj,fig,a,canvas):
         # Clear cursor coordinate cid if if exists to avoid multiple instances
@@ -986,17 +1051,97 @@ class GPRPyApp:
         self.delimiter = '\t'
         print("Delimiter set to tab")
 
+    def getPoint(self, proj, fig,a,canvas):
+        self.points = []
+        self.curve = []
+        # 连接鼠标点击事件和回调函数
+        canvas.mpl_connect('button_press_event', lambda event: self.on_canvas_click(event, a, canvas))
+        #self.points = np.array(points)
+        
+        self.leijia += 1
 
-# root = tk.Tk()
-    
-# for col in range(rightcol):
-#     root.columnconfigure(col, weight=1)
-# for row in range(figrowsp):    
-#     root.rowconfigure(row, weight=1)
-            
-# app = GPRPyApp(root)
+    def on_canvas_click(self, event,a,canvas):
 
-# root.mainloop()
+        # 当鼠标点击时，获取点击的坐标
+        x = event.xdata
+        y = event.ydata
+        points = self.points
+        points.append([x, y])
+        point = np.array(points)
 
+        colors = ['r', 'g', 'b', 'y', 'c', 'm', 'k']
+        sc_Colors = ['c', 'm', 'y', 'k', 'r', 'g', 'b']
+        a.scatter(point[:, 0], point[:, 1], s=10, color=sc_Colors[self.leijia], marker='x')
+        a.plot(point[:, 0], point[:, 1], color=colors[self.leijia], linewidth=1)
+        canvas.draw()
+        self.curves[str(self.leijia)] = point
+        
+    def plotCurves(self, proj, a, canvas):
 
+        newroot = tk.Tk(); newroot.columnconfigure(1, weight=1); newroot.rowconfigure(1, weight=1)
+        newroot.title('地质解释图')
+        fig = Figure(figsize=(12, 10)); fig.clear(); 
+        a = fig.add_subplot(111); a.clear()
 
+        x_min =proj.profilePos[0]
+        x_max = proj.profilePos[-1]
+
+        curves = self.curves
+        curve_max = []
+        curve_min = []
+        for key, curve in curves.items():
+            start = (x_min, curve[0, 1])
+            end = (x_max, curve[-1, 1])
+            curves[key] = np.vstack((start, curve, end))
+
+        xx = np.linspace(x_min, x_max, 1000)
+        
+        hatchs = ['.', '\?', 'o', '*', '/','+', 'x', '\\', '|', '-']
+        colors = ['k', 'k', 'k', 'k', 'c', 'm', 'k']
+        f_colors = ['#cccccc', '#acacac', '#c4c4c4', '#acacac', 'm', 'k', 'r']
+        b_colors = ['k', 'k', 'k', 'k', 'k', 'r', 'g']
+        for i, (key, curve) in enumerate(curves.items()):
+            #print(curve)
+            x1 = curve[:, 0]
+            y1 = curve[:, 1]
+            # 创建插值函数
+            f = interp1d(x1, y1)
+            yy = f(xx)
+            curves[key] = np.vstack((xx, yy)).T
+            a.plot(xx, yy, color=colors[i], linewidth=1)
+
+        f = interp1d(proj.profilePos, np.zeros_like(proj.profilePos))
+        yy = f(xx)
+        curves['0'] = np.vstack((xx, yy)).T
+        print('curves', len(curves))
+        f = interp1d(proj.profilePos, np.max(proj.twtt)*np.ones_like(proj.profilePos))
+        yy = f(xx)
+        curves[str(len(curves))] = np.vstack((xx, yy)).T
+
+        curves = dict(sorted(curves.items(), key=lambda x: x[0]))
+        print(curves)
+
+        print('curves', len(curves))
+        for i in range(len(curves)-1):
+            a.fill_between(xx, curves[str(i)][:, 1], curves[str(i+1)][:, 1], hatch=hatchs[i], \
+                           facecolor=f_colors[i], edgecolor=b_colors[i], alpha=1.0, \
+                           label='layer'+str(i))
+        a.invert_yaxis()
+        # 添加图例
+        fig.legend()
+        # 反转y轴
+        #a.invert_yaxis()
+        a.set_xlabel("profile position [m]", fontsize=mpl.rcParams['font.size'])
+        a.set_ylabel("depth [m]", fontsize=mpl.rcParams['font.size'])
+        a.xaxis.set_ticks_position('top')
+        a.xaxis.set_label_position('top')
+        
+        fig.tight_layout()
+        canvas = FigureCanvasTkAgg(fig, master=newroot)
+        canvas.get_tk_widget().grid(row=1, column=1, columnspan=10, rowspan=8, sticky='nsew')
+        canvas.draw()
+
+    def kirchhoffmigration(self, proj):
+        print("\nDoing Kirchhoffmigration...")
+        proj.kirchhoffmigration()
+        print("Kirchhoffmigration Done.\n")

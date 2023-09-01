@@ -1,10 +1,13 @@
+# setup.py 用于安装csimGPR
+
+import setuptools
+
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-    
 setuptools.setup(
     name="csimGPR",
-    version="1.0.12",
+    version="1.0.0",
     author="Zhiyu Zhang",
     author_email="erbiaoger@gmail.com",
     description="csimGPR - open source ground penetrating radar processing and visualization",

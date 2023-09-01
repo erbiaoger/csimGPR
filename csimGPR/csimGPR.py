@@ -1,3 +1,5 @@
+# csimGPR.py 用于处理GPR数据
+
 import os
 import time
 import numpy as np
@@ -8,6 +10,7 @@ import scipy.io as io
 from scipy import fft
 
 import csimGPR.toolbox.gprIO_2A as gprIO_2A
+import csimGPR.toolbox.gprIO_2B as gprIO_2B
 import csimGPR.toolbox.gprIO_DT1 as gprIO_DT1
 import csimGPR.toolbox.gprIO_DZT as gprIO_DZT
 import csimGPR.toolbox.gprIO_BSQ as gprIO_BSQ
@@ -16,6 +19,8 @@ import csimGPR.toolbox.gprpyTools as tools
 import csimGPR.toolbox.Robust_NMF as Robust_NMF
 from csimGPR.toolbox.my_stran import st
 from csimGPR.toolbox.filters import butterworth
+from csimGPR.kirchhoffmigration.Scan import Scan
+import csimGPR.irlib.external.mig_kirchoff as mig_kirchoff
 #from csimGPR.kirchhoffmigration.kirchhoffmigration import full_migration, taper
 
 try:
@@ -110,6 +115,28 @@ class gprpyProfile:
             histstr = "mygpr.importdata('%s')" %(filename)
             self.history.append(histstr)
 
+
+        if file_ext == ".2B":
+            self.data, _ = gprIO_2B.read2B(file_name + '.2B')
+            dx = 0.50000; dt = 0.3125
+            self.profilePos = np.arange(0, self.data.shape[1]*dx, dx)
+            self.twtt = np.arange(0, self.data.shape[0]*dt, dt) #np.linspace(0,self.info["rhf_range"],self.info["rh_nsamp"])
+
+            self.info = None
+            self.antsep = 0
+            self.velocity = None
+            self.depth = None
+            self.maxTopo = None
+            self.minTopo = None
+            self.threeD = None
+            self.data_pretopo = None
+            self.twtt_pretopo = None
+            # Initialize previous
+            self.initPrevious()
+            
+            # Put what you did in history
+            histstr = "mygpr.importdata('%s')" %(filename)
+            self.history.append(histstr)
         
         if file_ext==".DT1" or file_ext==".HD" or file_ext==".dt1" or file_ext==".hd":
 
@@ -252,6 +279,30 @@ class gprpyProfile:
         else:
             print("可读取 2A 2B dt1, DT1, hd, HD, DZT, dat, GPRhdr, rad, rd3, rd7, and gpr 文件.", '\n')
         print(self.data.shape, type(self.data))
+        
+    def importdataMars(self, filename):
+        file_name, file_ext = os.path.splitext(filename)
+        if file_ext == ".2A":
+            self.data = gprIO_2A.read2A(file_name + '.2A')
+            dx = 0.50000; dt = 0.3125
+            self.profilePos = np.arange(0, self.data.shape[1]*dx, dx)
+            self.twtt = np.arange(0, self.data.shape[0]*dt, dt) #np.linspace(0,self.info["rhf_range"],self.info["rh_nsamp"])
+
+            self.info = None
+            self.antsep = 0
+            self.velocity = None
+            self.depth = None
+            self.maxTopo = None
+            self.minTopo = None
+            self.threeD = None
+            self.data_pretopo = None
+            self.twtt_pretopo = None
+            # Initialize previous
+            self.initPrevious()
+            
+            # Put what you did in history
+            histstr = "mygpr.importdata('%s')" %(filename)
+            self.history.append(histstr)
 
     def showHistory(self):
         '''
@@ -772,7 +823,7 @@ class gprpyProfile:
         histstr = "mygpr.antennaSep()"
         self.history.append(histstr)
 
-        
+    # TODO: fkMigration
     def fkMigration(self):
         '''
         Apply Stolt's f-k migration to the profile. Requires the 
@@ -1036,35 +1087,121 @@ class gprpyProfile:
         self.data = butterworth(data, cutoff, fs, order=6, btype="bandpass", axis=0)
 
 
+    # def kirchhoffmigration(self):
+    #     start_time=time.time()
+    #     data = np.array(self.data.T)
+    #     noff = 2
+    #     nx, nt = data.shape
+    #     print("data shape: ", data.shape)
+    #     newdata = data.reshape((noff, nx//noff, nt), order='F')
+    #     newdata = newdata.astype(np.float32)
+    #     print("new data shape: ", newdata.shape)
+
+    #     noff, nx, nt = newdata.shape
+    #     dx = self.profilePos[3] - self.profilePos[2]
+    #     dt = (self.twtt[3] - self.twtt[2])*1e-9 
+    #     ntrc = nx
+    #     nz = nt
+    #     dz = V*dt/2
+    #     dcdp = dx
+
+
+    #     print("Waiting...")
+    #     kfdata = full_migration(data=newdata, 
+    #                             nx=nx, nz=nz, noff=noff, ntrc=nx, nsmp=nt,
+    #                             dx=dx, dz=dz, dt=dt, dcdp=dcdp, 
+    #                             offsets=np.arange(0, noff*ntrc*dx, ntrc*dx).astype(np.float32), 
+    #                             V=self.velocity * 1e9)
+    #     #kfdata = full_migration(newdata, nx=nx, nz=nz, noff=noff, dt=dt, dx=dx, dz=dx, dcdp=dx, V=self.velocity, offsets=np.array([0, 500]))
+    #     print("data shape after kirchhoffmigration: ", kfdata.shape)
+    #     self.data = kfdata.reshape(nx*noff, nt).T
+    #     print("所用时间：", time.time()-start_time, " s")
+
+    # TODO: 优化
     def kirchhoffmigration(self):
-        start_time=time.time()
-        data = np.array(self.data.T)
-        noff = 2
-        nx, nt = data.shape
-        print("data shape: ", data.shape)
-        newdata = data.reshape((noff, nx//noff, nt), order='F')
-        newdata = newdata.astype(np.float32)
-        print("new data shape: ", newdata.shape)
+        # apply migration
+        data = np.array(self.data)
+        x = self.profilePos
+        t = self.twtt
+        dt=self.twtt[3]-self.twtt[2]
+        #dx=self.profilePos[1]-self.profilePos[0]
+        dx=(self.profilePos[-1]-self.profilePos[0])/(len(self.profilePos)-1)
+        # fkmig sets x profile to start at zero but resamples
 
-        noff, nx, nt = newdata.shape
-        dx = self.profilePos[3] - self.profilePos[2]
-        dt = (self.twtt[3] - self.twtt[2])*1e-9 
-        ntrc = nx
-        nz = nt
-        dz = V*dt/2
-        dcdp = dx
+        print(self.velocity*1e9)
+        self.data = mig_kirchoff.mig_kirchoff(data, x, t, v=self.velocity*1e9, xoffset=12.0, xwindow=50.0, pad_spacing=1.0)
+        # self.data,self.twtt,migProfilePos=mig_fk].fkmig(self.data,dt,dx,self.velocity)
+        # self.profilePos = migProfilePos + self.profilePos[0]
+
+        # data = np.array(self.data)
+        # x = self.profilePos
+        # t = self.twtt
+        # S = Scan(data, x, t)
+        # # print(x.shape, t.shape, data.shape)
+        # # 设置迁移参数
+
+        # h = 21.59e-2         # 天线离地面的高度
+        # # h = 0.
+        # tx_dx = 3e-2         # 发射天线距离阵列中心的水平距离
+        # rx_dx = -3e-2        # 接收天线距离阵列中心的水平距离
+        # er = 5               # 地面介电常数
+
+        # dt = t[2] - t[1]          # t0在哪里，真的吗？
+        # compensate_dt = 1    # 是否要补偿t0？（推荐）
+
+        # # 设置变量
+        # S.h = h
+        # S.tx_pos = tx_dx
+        # S.rx_pos = rx_dx
+        # S.er = er
+        # S.t = S.t - compensate_dt * d\\t
+
+        # # 计算向量
+        # Nx = x.shape[0]
+        # Nz = t.shape[0]
+        # xC = np.linspace(0, np.max(S.x), Nx)
+        # zC = np.linspace(0, 4., Nz)
+
+        # # display 0: 不显示进度条; 1: 显示进度条
+        # display_progress_bar = 0
+
+        # S.BKGR_MEAN()
+        # # np.save("BKGR_MEAN.npy", S.BKGR_MEAN)
+        # # print(S.DataBKGR.shape, data.shape, x.shape, t.shape)
+        # # self.data = S.DataBKGR
+        # # 执行迁移成像
+        # S.migrate(xC, zC, display_progress_bar)
+        # self.data = S.Image
+        # start_time=time.time()
+        # data = np.array(self.data.T)
+        # noff = 2
+        # nx, nt = data.shape
+        # print("data shape: ", data.shape)
+        # newdata = data.reshape((noff, nx//noff, nt), order='F')
+        # newdata = newdata.astype(np.float32)
+        # print("new data shape: ", newdata.shape)
+
+        # noff, nx, nt = newdata.shape
+        # dx = self.profilePos[3] - self.profilePos[2]
+        # dt = (self.twtt[3] - self.twtt[2])*1e-9 
+        # ntrc = nx
+        # nz = nt
+        # dz = V*dt/2
+        # dcdp = dx
 
 
-        print("Waiting...")
-        kfdata = full_migration(data=newdata, 
-                                nx=nx, nz=nz, noff=noff, ntrc=nx, nsmp=nt,
-                                dx=dx, dz=dz, dt=dt, dcdp=dcdp, 
-                                offsets=np.arange(0, noff*ntrc*dx, ntrc*dx).astype(np.float32), 
-                                V=self.velocity * 1e9)
-        #kfdata = full_migration(newdata, nx=nx, nz=nz, noff=noff, dt=dt, dx=dx, dz=dx, dcdp=dx, V=self.velocity, offsets=np.array([0, 500]))
-        print("data shape after kirchhoffmigration: ", kfdata.shape)
-        self.data = kfdata.reshape(nx*noff, nt).T
-        print("所用时间：", time.time()-start_time, " s")
+        # print("Waiting...")
+        # kfdata = full_migration(data=newdata, 
+        #                         nx=nx, nz=nz, noff=noff, ntrc=nx, nsmp=nt,
+        #                         dx=dx, dz=dz, dt=dt, dcdp=dcdp, 
+        #                         offsets=np.arange(0, noff*ntrc*dx, ntrc*dx).astype(np.float32), 
+        #                         V=self.velocity * 1e9)
+        # #kfdata = full_migration(newdata, nx=nx, nz=nz, noff=noff, dt=dt, dx=dx, dz=dx, dcdp=dx, V=self.velocity, offsets=np.array([0, 500]))
+        # print("data shape after kirchhoffmigration: ", kfdata.shape)
+        # self.data = kfdata.reshape(nx*noff, nt).T
+        # print("所用时间：", time.time()-start_time, " s")
+
+
 
     def noiseCC(self):
         start_time=time.time()
@@ -1077,24 +1214,35 @@ class gprpyProfile:
         print("所用时间：", time.time()-start_time, " s")
 
 
-    def stspectrum(self, fmin, fmax):   
+    def stspectrum(self, ax, fmin, fmax):   
         start_time=time.time()
         datas = np.array(self.data)
         delta = (self.twtt[3] - self.twtt[2])*1e-9
         npts = datas.shape[0]
+        t = delta * np.arange(npts)*1e9
         print('ntps: ', npts)
-        xf = fft.fftfreq(npts, delta)
+        xf = np.abs(fft.fftfreq(npts, delta))
+        dx = self.profilePos[3] - self.profilePos[2]
+        print("xf: ", xf.shape, np.max(xf))
         idex_min = np.abs(xf - fmin*1e6).argmin()
         idex_max = np.abs(xf - fmax*1e6).argmin()
         print(idex_min, idex_max)
 
         print("Waiting...")
         nt, nx = datas.shape
+
+        
         for ix in range(nx):
-            data_st = np.abs(st(datas[:,ix]))
+            
+            data_st = st(datas[:,ix])
+            data_st_one_trace = np.zeros_like(data_st[0, :])
+            #print('data_st: ', data_st.shape)
             for j in range(idex_min, idex_max):
-                data_st_one_trace = data_st[j, :]
+                data_st_one_trace += np.abs(data_st[j, :])
             datas[:, ix] = data_st_one_trace
 
+        ax.imshow(datas, extent=[0, nx*dx, np.max(t), 0], aspect='auto', cmap='jet', )
+        ax.set_ylabel("Time [ns]"); ax.set_xlabel("trace")
+
         print("所用时间：", time.time()-start_time, " s")
-        return datas
+        return ax

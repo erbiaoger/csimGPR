@@ -1,4 +1,5 @@
-"""Filter specific utilities."""
+# filters.py 用于滤波
+
 from numpy import asarray
 from scipy.signal import sosfiltfilt, butter as signal_butter
 

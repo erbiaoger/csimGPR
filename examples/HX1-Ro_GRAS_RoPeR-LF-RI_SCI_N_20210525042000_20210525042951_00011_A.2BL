@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="https://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1C00.sch"
+schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<Product_Observational xmlns="http://pds.nasa.gov/pds4/pds/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pds.nasa.gov/pds4/pds/v1 &#10;                     https://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1C00.xsd">
+	<Identification_Area>
+		<logical_identifier>HX1-Ro_GRAS_RoPeR-LF-RI_SCI_N_20210525042000_20210525042951_00011.2B</logical_identifier>
+		<version_id>1.1</version_id>
+		<title>HX-1 mission</title>
+		<information_model_version>1.12.0.0</information_model_version>
+		<product_class>Product_Observational</product_class>
+		<Modification_History>
+			<Modification_Detail>
+				<modification_date>2020-07-23</modification_date>
+				<version_id>1.0</version_id>
+				<description>First release</description>
+			</Modification_Detail>
+			<Modification_Detail>
+				<modification_date>2021-09-03</modification_date>
+				<version_id>1.1</version_id>
+				<description>Data updating</description>
+			</Modification_Detail>
+		</Modification_History>
+	</Identification_Area>
+	<Reference_List>
+		<Internal_Reference>
+			<lidvid_reference />
+			<reference_type />
+			<comment />
+		</Internal_Reference>
+		<External_Reference>
+			<doi />
+			<reference_text />
+		</External_Reference>
+		<Source_Product_Internal>
+			<lidvid_reference>HX1-Ro_GRAS_RoPeR-LF-RI_SCI_N_20210524154110_20210525162044_00011_A.01</lidvid_reference>
+			<reference_type>data_to_raw_source_product</reference_type>
+			<comment />
+		</Source_Product_Internal>
+	</Reference_List>
+	<Observation_Area>
+		<Time_Coordinates>
+			<start_date_time>2021-05-25T04:20:00.601000Z</start_date_time>
+			<stop_date_time>2021-05-25T04:29:51.871000Z</stop_date_time>
+		</Time_Coordinates>
+		<Primary_Result_Summary>
+			<purpose>Science</purpose>
+			<processing_level>Calibrated</processing_level>
+			<Science_Facets>
+				<wavelength_range>Microwave</wavelength_range>
+				<domain>Surface</domain>
+			</Science_Facets>
+		</Primary_Result_Summary>
+		<Investigation_Area>
+			<name>HX-1</name>
+			<type>Mission</type>
+		</Investigation_Area>
+		<Observing_System>
+			<name>HX-1 Rover</name>
+			<Observing_System_Component>
+				<name>Mars Rover Penetrating Radar</name>
+				<type>Instrument</type>
+			</Observing_System_Component>
+		</Observing_System>
+		<Target_Identification>
+			<name>Mars</name>
+			<type>Planet</type>
+		</Target_Identification>
+		<Mission_Area>
+			<product_id>HX1-Ro_GRAS_RoPeR-LF-RI_SCI_N_20210525042000_20210525042951_00011_A.2B</product_id>
+			<product_version>A</product_version>
+			<product_level>2B</product_level>
+			<instrument_name>Mars Rover Penetrating Radar</instrument_name>
+			<instrument_id>RoPeR</instrument_id>
+			<sequence_id>00011</sequence_id>
+			<Work_Mode_Parm>
+				<channel>Low_Frequency_Mode</channel>
+				<data_content>LF_Real_and_Imaginary Data</data_content>
+				<work_mode>Two_Channels</work_mode>
+				<trigger_mode>Fixed_Distance_Trigger</trigger_mode>
+			</Work_Mode_Parm>
+			<Landing_Site_Location>
+				<reference_frame>MARS_COORDINATE_SYSTEM</reference_frame>
+				<longitude unit="deg">109.908440</longitude>
+				<latitude unit="deg">25.083319</latitude>
+				<altitude unit="km">-4.918556</altitude>
+			</Landing_Site_Location>
+			<start_local_mean_solar_time>00011M12:27:02.064</start_local_mean_solar_time>
+			<start_local_true_solar_time>00011 12:21:42</start_local_true_solar_time>
+			<stop_local_mean_solar_time>00011M12:36:37.515</stop_local_mean_solar_time>
+			<stop_local_true_solar_time>00011 12:31:18</stop_local_true_solar_time>
+		</Mission_Area>
+	</Observation_Area>
+	<File_Area_Observational>
+		<File>
+			<file_name>HX1-Ro_GRAS_RoPeR-LF-RI_SCI_N_20210525042000_20210525042951_00011_A.2B</file_name>
+			<local_identifier>None</local_identifier>
+			<creation_date_time>2021-09-07T01:50:16.000000Z</creation_date_time>
+			<file_size unit="byte">168966</file_size>
+			<records>14</records>
+		</File>
+		<Table_Binary>
+			<offset unit="byte">0</offset>
+			<records>14</records>
+			<Record_Binary>
+				<fields>27</fields>
+				<groups>2</groups>
+				<record_length unit="byte">12069</record_length>
+				<Field_Binary>
+					<name>Channel</name>
+					<field_number>1</field_number>
+					<field_location unit="byte">1</field_location>
+					<data_type>UnsignedBitString</data_type>
+					<field_length unit="byte">4</field_length>
+					<field_format>None</field_format>
+					<unit>none</unit>
+					<description>通道标识, 0x146F1111</description>
+				</Field_Binary>
+				<Field_Binary>
+					<name>Time</name>
+					<field_number>2</field_number>
+					<field_location unit="byte">5</field_location>
+					<data_type>UnsignedBitString</data_type>
+					<field_length unit="byte">6</field_length>
+					<field_format>None</field_format>
+					<unit>none</unit>
+					<description>道数据时间</description>
+				</Field_Binary>
+				<Field_Binary>
+					<name>Frame_Count</name>
+					<field_number>3</field_number>
+					<field_location unit="byte">11</field_location>
+					<data_type>UnsignedByte</data_type>
+					<field_length unit="byte">1</field_length>
+					<field_format>%3d</field_format>
+					<unit>none</unit>
+					<description>道数据计数</description>
+				</Field_Binary>
+				<Field_Binary>
+					<name>Data_node</name>
+					<field_number>4</field_number>
+					<field_location unit="byte">12</field_location>
+					<data_type>UnsignedBitString</data_type>
+					<field_length unit="byte">1</field_length>
+					<field_format>None</field_format>
+					<unit>none</unit>
+					<description>科学数据内容标识, 0xCC</description>
+				</Field_Binary>
+				<Field_Binary>
+					<name>Sampling_Window_LF</name>
+					<field_number>5</field_number>
+					<field_location unit="byte">13</field_location>
+					<data_type>UnsignedBitString</data_type>
+					<field_length unit="byte">1</field_length>
+					<field_format>None</field_format>
+					<unit>none</unit>
+					<description>低频通道采样时窗</description>
+				</Field_Binary>
+				<Field_Binary>
+					<name>Work_Mode</name>
+					<field_number>6</field_number>
+					<field_location unit="byte">14</field_location>
+					<data_type>UnsignedBitString</data_type>
+					<field_length unit="byte">1</field_length>
+					<field_format>None</field_format>
+					<unit>none</unit>
+					<description>工作状态</description>
+				</Field_Binary>
+				<Field_Binary>
+					<name>Trigger_Mode</name>
+					<field_number>7</field_number>
+					<field_location unit="byte">15</field_location>
+					<data_type>UnsignedBitString</data_type>
+					<field_length unit="byte">1</field_length>
+					<field_format>None</field_format>
+					<unit>none</unit>
+					<description>触发方式</description>
+				</Field_Binary>
+				<Field_Binary>
+					<name>Detection_Interval_Low</name>
+					<field_number>8</field_number>
+					<field_location unit="byte">16</field_location>
+					<data_type>UnsignedBitString</data_type>
+					<field_length unit="byte">1</field_length>
+					<field_format>None</field_format>
+					<unit>none</unit>
+					<description>低频通道探测间隔</description>
+				</Field_Binary>
+				<Field_Binary>
+					<name>Effective_Data_Length</name>
+					<field_number>9</field_number>
+					<field_location unit="byte">17</field_location>
+					<data_type>UnsignedMSB2</data_type>
+					<field_length unit="byte">2</field_length>
+					<field_format>%5d</field_format>
+					<unit>none</unit>
+					<description>科学数据有效长度,取值12000、8000、4000、或2000，对应采样时窗15us、10 us、5 us和2.5us的探测数据</description>
+				</Field_Binary>
+				<Group_Field_Binary>
+					<name>Scientific_Data</name>
+					<group_number>1</group_number>
+					<repetitions>3000</repetitions>
+					<fields>1</fields>
+					<groups>0</groups>
+					<group_location unit="byte">19</group_location>
+					<group_length unit="byte">12000</group_length>
+					<Field_Binary>
+						<name>ECHO_DATA</name>
+						<field_number>1</field_number>
+						<field_location unit="byte">1</field_location>
+						<data_type>IEEE754LSBSingle</data_type>
+						<field_length unit="byte">4</field_length>
+						<field_format>%.6f</field_format>
+						<unit>none</unit>
+						<description>低频通道脉冲压缩后FFT实部和虚部数据，其中实部数据为前（科学数据有效长度）/2 字节，虚部数据为后（科学数据有效长度）/2 字节，不足部分补0</description>
+					</Field_Binary>
+				</Group_Field_Binary>
+				<Field_Binary>
+					<name>Velocity_Vx</name>
+					<field_number>10</field_number>
+					<field_location unit="byte">12019</field_location>
+					<data_type>SignedMSB2</data_type>
+					<field_length unit="byte">2</field_length>
+					<field_format>%6d</field_format>
+					<unit>10um/s</unit>
+					<description>速度Vx</description>
+				</Field_Binary>
+				<Field_Binary>
+					<name>Velocity_Vy</name>
+					<field_number>11</field_number>
+					<field_location unit="byte">12021</field_location>
+					<data_type>SignedMSB2</data_type>
+					<field_length unit="byte">2</field_length>
+					<field_format>%6d</field_format>
+					<unit>10um/s</unit>
+					<description>速度Vy</description>
+				</Field_Binary>
+				<Field_Binary>
+					<name>Velocity_Vz</name>
+					<field_number>12</field_number>
+					<field_location unit="byte">12023</field_location>
+					<data_type>SignedMSB2</data_type>
+					<field_length unit="byte">2</field_length>
+					<field_format>%6d</field_format>
+					<unit>10um/s</unit>
+					<description>速度Vz</description>
+				</Field_Binary>
+				<Field_Binary>
+					<name>Position_X</name>
+					<field_number>13</field_number>
+					<field_location unit="byte">12025</field_location>
+					<data_type>SignedMSB2</data_type>
+					<field_length unit="byte">2</field_length>
+					<field_format>%6d</field_format>
+					<unit>0.01m</unit>
+					<description>位置X</description>
+				</Field_Binary>
+				<Field_Binary>
+					<name>Position_Y</name>
+					<field_number>14</field_number>
+					<field_location unit="byte">12027</field_location>
+					<data_type>SignedMSB2</data_type>
+					<field_length unit="byte">2</field_length>
+					<field_format>%6d</field_format>
+					<unit>0.01m</unit>
+					<description>位置Y</description>
+				</Field_Binary>
+				<Field_Binary>
+					<name>Position_Z</name>
+					<field_number>15</field_number>
+					<field_location unit="byte">12029</field_location>
+					<data_type>SignedMSB2</data_type>
+					<field_length unit="byte">2</field_length>
+					<field_format>%6d</field_format>
+					<unit>0.01m</unit>
+					<description>位置Z</description>
+				</Field_Binary>
+				<Field_Binary>
+					<name>Pitch</name>
+					<field_number>16</field_number>
+					<field_location unit="byte">12031</field_location>
+					<data_type>SignedMSB2</data_type>
+					<field_length unit="byte">2</field_length>
+					<field_format>%6d</field_format>
+					<unit>0.005493deg</unit>
+					<description>姿态pitch</description>
+				</Field_Binary>
+				<Field_Binary>
+					<name>Yaw</name>
+					<field_number>17</field_number>
+					<field_location unit="byte">12033</field_location>
+					<data_type>SignedMSB2</data_type>
+					<field_length unit="byte">2</field_length>
+					<field_format>%6d</field_format>
+					<unit>0.005493deg</unit>
+					<description>姿态yaw</description>
+				</Field_Binary>
+				<Field_Binary>
+					<name>Roll</name>
+					<field_number>18</field_number>
+					<field_location unit="byte">12035</field_location>
+					<data_type>SignedMSB2</data_type>
+					<field_length unit="byte">2</field_length>
+					<field_format>%6d</field_format>
+					<unit>0.005493deg</unit>
+					<description>姿态roll</description>
+				</Field_Binary>
+				<Field_Binary>
+					<name>Rover_Location_X</name>
+					<field_number>19</field_number>
+					<field_location unit="byte">12037</field_location>
+					<data_type>IEEE754LSBSingle</data_type>
+					<field_length unit="byte">4</field_length>
+					<field_format>%.6f</field_format>
+					<unit>m</unit>
+					<description>火星车着陆点站心坐标系位置X</description>
+				</Field_Binary>
+				<Field_Binary>
+					<name>Rover_Location_Y</name>
+					<field_number>20</field_number>
+					<field_location unit="byte">12041</field_location>
+					<data_type>IEEE754LSBSingle</data_type>
+					<field_length unit="byte">4</field_length>
+					<field_format>%.6f</field_format>
+					<unit>m</unit>
+					<description>火星车着陆点站心坐标系位置Y</description>
+				</Field_Binary>
+				<Field_Binary>
+					<name>Rover_Location_Z</name>
+					<field_number>21</field_number>
+					<field_location unit="byte">12045</field_location>
+					<data_type>IEEE754LSBSingle</data_type>
+					<field_length unit="byte">4</field_length>
+					<field_format>%.6f</field_format>
+					<unit>m</unit>
+					<description>火星车着陆点站心坐标系位置Z</description>
+				</Field_Binary>
+				<Field_Binary>
+					<name>Rover_Attitude_Roll</name>
+					<field_number>22</field_number>
+					<field_location unit="byte">12049</field_location>
+					<data_type>IEEE754LSBSingle</data_type>
+					<field_length unit="byte">4</field_length>
+					<field_format>%.6f</field_format>
+					<unit>deg</unit>
+					<description>火星车着陆点站心坐标系姿态ROLL</description>
+				</Field_Binary>
+				<Field_Binary>
+					<name>Rover_Attitude_Pitch</name>
+					<field_number>23</field_number>
+					<field_location unit="byte">12053</field_location>
+					<data_type>IEEE754LSBSingle</data_type>
+					<field_length unit="byte">4</field_length>
+					<field_format>%.6f</field_format>
+					<unit>deg</unit>
+					<description>火星车着陆点站心坐标系姿态PITCH</description>
+				</Field_Binary>
+				<Field_Binary>
+					<name>Rover_Attitude_Yaw</name>
+					<field_number>24</field_number>
+					<field_location unit="byte">12057</field_location>
+					<data_type>IEEE754LSBSingle</data_type>
+					<field_length unit="byte">4</field_length>
+					<field_format>%.6f</field_format>
+					<unit>deg</unit>
+					<description>火星车着陆点站心坐标系姿态YAW</description>
+				</Field_Binary>
+				<Field_Binary>
+					<name>Solar_Incidence_Angle</name>
+					<field_number>25</field_number>
+					<field_location unit="byte">12061</field_location>
+					<data_type>IEEE754LSBSingle</data_type>
+					<field_length unit="byte">4</field_length>
+					<field_format>%.6f</field_format>
+					<unit>deg</unit>
+					<description>火星车处太阳入射角</description>
+				</Field_Binary>
+				<Field_Binary>
+					<name>Solar_Azimuth_Angle</name>
+					<field_number>26</field_number>
+					<field_location unit="byte">12065</field_location>
+					<data_type>IEEE754LSBSingle</data_type>
+					<field_length unit="byte">4</field_length>
+					<field_format>%.6f</field_format>
+					<unit>deg</unit>
+					<description>火星车处太阳方位角</description>
+				</Field_Binary>
+				<Field_Binary>
+					<name>Quality_Information</name>
+					<field_number>27</field_number>
+					<field_location unit="byte">12069</field_location>
+					<data_type>UnsignedBitString</data_type>
+					<field_length unit="byte">1</field_length>
+					<field_format>None</field_format>
+					<unit>none</unit>
+					<description>质量信息</description>
+				</Field_Binary>
+			</Record_Binary>
+		</Table_Binary>
+	</File_Area_Observational>
+</Product_Observational>

@@ -1,3 +1,5 @@
+# gprIO_2A.py 用于读取2A格式的数据
+
 import struct
 import numpy as np
 import os
@@ -47,38 +49,3 @@ def read2A(filename=None):
     
     fin.close()
     return np.asmatrix(np.array(datalist).T)
-
-# def read2A(filename=None):
-#     ScanNum = 1063
-#     RecLen = 8283
-#     SampleNum = 2048
-#     RecOffset = 90
-#     LabNum = 0
-#     DatclonNum = ScanNum - 1  # LabNum + DatclonNum = ScanNum
-
-
-#     data = np.fromfile(filename, dtype=np.float32)
-#     data = data.reshape((ScanNum+1+RecOffset, RecLen))
-#     return np.asmatrix(data[1:, RecOffset+1:RecOffset+SampleNum+1].T)
-
-
-# def read2A(filename=None):
-#     import numpy as np
-#     import os
-
-#     ScanNum = 1063
-#     RecLen = 8283
-#     SampleNum = 2048
-#     RecOffset = 90
-#     LabNum = 0
-#     DatclonNum = ScanNum - 1  # LabNum + DatclonNum = ScanNum
-
-#     path = os.getcwd()
-#     fin = open(filename, 'rb')
-#     fin.seek(RecOffset + RecLen * LabNum)
-#     data = np.fromfile(fin, dtype=np.float32)#, count=SampleNum * DatclonNum)
-#     print(data.shape)
-#     data = data.reshape((SampleNum, DatclonNum+1), order='F')
-#     fin.close()
-#     print(data.shape)
-#     return np.asmatrix(data)

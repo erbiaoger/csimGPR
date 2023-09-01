@@ -135,18 +135,28 @@ def v_analysis(vmin, vmax):
 #         R[ioff,:,:] = mod_cyMigrate.cyMigrate(data,nx,nz,dt,dx,dz,dcdp,V,offsets,nsmp,ntrc,noff,ioff)
 #     return R
 
-def full_migration(data=None, 
-                    nx=None, nz=None, noff=None, ntrc=None, nsmp=None,
-                    dx=None, dz=None, dt=None, dcdp=None, 
-                    offsets=None, 
-                    V=None):
+def full_migration(data):
+    nx = ntrc
+    V = 2950
 
-    print(data.shape, nx, nz, noff, ntrc, nsmp, dx, dz, dt, dcdp, offsets.shape, V)
     R = np.zeros((noff,nx, nz))
-    print("R shape: ", R.shape, "\ndata shape: ", data.shape)
     for ioff in range(noff):            # each offset in its own layer
         R[ioff,:,:] = mod_cyMigrate.cyMigrate(data,nx,dx,nz,dz,dt,dcdp,V,offsets,nsmp,ntrc,noff,ioff)
     return R
+
+
+# def full_migration(data=None, 
+#                     nx=None, nz=None, noff=None, ntrc=None, nsmp=None,
+#                     dx=None, dz=None, dt=None, dcdp=None, 
+#                     offsets=None, 
+#                     V=None):
+
+#     print(data.shape, nx, nz, noff, ntrc, nsmp, dx, dz, dt, dcdp, offsets.shape, V)
+#     R = np.zeros((noff,nx, nz))
+#     print("R shape: ", R.shape, "\ndata shape: ", data.shape)
+#     for ioff in range(noff):            # each offset in its own layer
+#         R[ioff,:,:] = mod_cyMigrate.cyMigrate(data,nx,dx,nz,dz,dt,dcdp,V,offsets,nsmp,ntrc,noff,ioff)
+#     return R
 
 def plot_offsets(data,name):
 
