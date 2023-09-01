@@ -15,10 +15,7 @@
 #
 # For simple use ———— if you have 500 points of 50Hz singal，you want check 10-30Hz frequency domain
 #               then set st(data,minfreq=100,maxfreq=300)
-#
-# Date:2019/1/9
-#
-# Copyright (c) by GaoSong
+
 
 import numpy as np
 from scipy import signal 
@@ -92,21 +89,3 @@ def g_window(length,freq,factor):
     gauss=np.hstack((gauss,gauss))[length//2:length//2+length]
     return gauss
 
-# if __name__=='__main__':
-
-#     t=np.linspace(0,10,5001)
-#     w=signal.chirp(t,f0=12.5,f1=2.5,t1=10,method='linear')
-#     fmin=0
-#     fmax=250
-#     stres=st(w,fmin,fmax)
-#     extent=(t[0],t[-1],fmin/10,fmax/10)
-
-
-#     import matplotlib.pyplot as plt
-    
-#     fig,ax=plt.subplots(2,1)
-#     ax[0].plot(t,w)
-#     ax[1].imshow(np.abs(stres),origin='lower',extent=extent)
-#     ax[1].axis('tight')
-#     ax[1].set(xlabel='time',ylabel='frequency')
-#     plt.show()

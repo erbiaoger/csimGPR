@@ -1,3 +1,5 @@
+# csimGPR.py 用于处理GPR数据
+
 import os
 import time
 import numpy as np
@@ -1077,24 +1079,35 @@ class gprpyProfile:
         print("所用时间：", time.time()-start_time, " s")
 
 
-    def stspectrum(self, fmin, fmax):   
+    def stspectrum(self, ax, fmin, fmax):   
         start_time=time.time()
         datas = np.array(self.data)
         delta = (self.twtt[3] - self.twtt[2])*1e-9
         npts = datas.shape[0]
+        t = delta * np.arange(npts)*1e9
         print('ntps: ', npts)
-        xf = fft.fftfreq(npts, delta)
+        xf = np.abs(fft.fftfreq(npts, delta))
+        dx = self.profilePos[3] - self.profilePos[2]
+        print("xf: ", xf.shape, np.max(xf))
         idex_min = np.abs(xf - fmin*1e6).argmin()
         idex_max = np.abs(xf - fmax*1e6).argmin()
         print(idex_min, idex_max)
 
         print("Waiting...")
         nt, nx = datas.shape
+
+        
         for ix in range(nx):
-            data_st = np.abs(st(datas[:,ix]))
+            
+            data_st = st(datas[:,ix])
+            data_st_one_trace = np.zeros_like(data_st[0, :])
+            #print('data_st: ', data_st.shape)
             for j in range(idex_min, idex_max):
-                data_st_one_trace = data_st[j, :]
+                data_st_one_trace += np.abs(data_st[j, :])
             datas[:, ix] = data_st_one_trace
 
+        ax.imshow(datas, extent=[0, nx*dx, np.max(t), 0], aspect='auto', cmap='jet', )
+        ax.set_ylabel("Time [ns]"); ax.set_xlabel("trace")
+
         print("所用时间：", time.time()-start_time, " s")
-        return datas
+        return ax

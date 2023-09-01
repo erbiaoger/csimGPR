@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Aug 18 16:20:21 2021
-
-@author: nephilim
-"""
-
 from matplotlib import pyplot,cm
 import numpy as np
 import numba
