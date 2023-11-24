@@ -552,8 +552,11 @@ class GPRPyApp:
         plotCurvesButton.grid(row=21, column=rightcol, sticky='nsew',columnspan=colsp)
         self.balloon.bind(plotCurvesButton,
                             "绘制曲线。")
+<<<<<<< HEAD
         
 
+=======
+>>>>>>> f577a0b15a32caf0ff7a76dd5cd48d3a368d1d2e
 
     def stspectrum(self, proj):
         
@@ -887,6 +890,22 @@ class GPRPyApp:
         self.prevyrng=self.yrng    
 
 
+    def initLoadData(self,proj):
+        filename = 'examples/CE4_GRAS_LPR-2A_SCI_N_20190104004000_20190109213900_0001_A.2A'
+        proj.importdata(filename=filename)
+        self.xrng = [np.min(proj.profilePos),np.max(proj.profilePos)]
+        if proj.depth is None:
+            self.yrng = [0,np.max(proj.twtt)]
+        else:
+            if proj.maxTopo is None:
+                self.yrng = [0,np.max(proj.depth)]
+            else:
+                self.yrng = [proj.maxTopo-np.max(proj.depth), proj.maxTopo]
+        self.asp=None
+        # Just in case someone presses undo before changing yrange        
+        self.prevyrng=self.yrng    
+
+
         
     def saveData(self,proj):        
         filename = fd.asksaveasfilename(defaultextension=".gpr")
@@ -920,6 +939,10 @@ class GPRPyApp:
             proj.writeHistory(filename)
             print("Wrote script to " + filename)
 
+<<<<<<< HEAD
+=======
+    #TAG: plotProfileData
+>>>>>>> f577a0b15a32caf0ff7a76dd5cd48d3a368d1d2e
     def plotProfileData(self,proj,fig,a,canvas):
         # Clear cursor coordinate cid if if exists to avoid multiple instances
         print('\nDoing plotProfileData ...')
@@ -1139,9 +1162,13 @@ class GPRPyApp:
         fig.tight_layout()
         canvas = FigureCanvasTkAgg(fig, master=newroot)
         canvas.get_tk_widget().grid(row=1, column=1, columnspan=10, rowspan=8, sticky='nsew')
+<<<<<<< HEAD
         canvas.draw()
 
     def kirchhoffmigration(self, proj):
         print("\nDoing Kirchhoffmigration...")
         proj.kirchhoffmigration()
         print("Kirchhoffmigration Done.\n")
+=======
+        canvas.draw()
+>>>>>>> f577a0b15a32caf0ff7a76dd5cd48d3a368d1d2e
