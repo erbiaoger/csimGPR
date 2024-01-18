@@ -1,35 +1,42 @@
-# csimGPR.py 用于处理GPR数据
+#!/usr/bin/env python
+# @file:           csimGPR.py
+# @author:         Zhiyu Zhang
+# @Institution:    JiLin University
+# @Email:          erbiaoger@gmail.com
+# @url:            erbiaoger.site
+# @date:           2023-07-18 20:50:07
+# @Description     算法部分：用于处理GPR数据, 读取数据, 处理数据, 显示数据, 保存数据。
+# @version:        v1.0.0
+
 
 import os
 import time
+import copy
 import numpy as np
 import matplotlib.pyplot as plt
 import pickle
 import skimage.transform
 import scipy.io as io
 from scipy import fft
-
-import csimGPR.toolbox.gprIO_2A as gprIO_2A
-import csimGPR.toolbox.gprIO_2B as gprIO_2B
-import csimGPR.toolbox.gprIO_DT1 as gprIO_DT1
-import csimGPR.toolbox.gprIO_DZT as gprIO_DZT
-import csimGPR.toolbox.gprIO_BSQ as gprIO_BSQ
-import csimGPR.toolbox.gprIO_MALA as gprIO_MALA
-import csimGPR.toolbox.gprpyTools as tools
-import csimGPR.toolbox.Robust_NMF as Robust_NMF
-from csimGPR.toolbox.my_stran import st
-from csimGPR.toolbox.filters import butterworth
-from csimGPR.kirchhoffmigration.Scan import Scan
-import csimGPR.irlib.external.mig_kirchoff as mig_kirchoff
-#from csimGPR.kirchhoffmigration.kirchhoffmigration import full_migration, taper
-
-try:
-    import csimGPR.irlib.external.mig_fk as mig_fk
-except:
-    print("Install fk migration if needed")
-import copy
-import scipy.interpolate as interp
 from pyevtk.hl import gridToVTK
+
+from csimGPR.toolbox import (gprIO_2A, gprIO_2B, gprIO_DT1,
+                             gprIO_DZT, gprIO_BSQ, gprIO_MALA,
+                             gprpyTools, Robust_NMF, my_stran, filters,)
+
+from csimGPR.irlib.external import mig_kirchoff, mig_fk
+
+
+#from csimGPR.kirchhoffmigration.kirchhoffmigration import full_migration, taper
+# from csimGPR.kirchhoffmigration.Scan import Scan
+
+# try:
+#     import csimGPR.irlib.external.mig_fk as mig_fk
+# except:
+#     print("Install fk migration if needed")
+
+# import scipy.interpolate as interp
+
 
 class gprpyProfile:
     '''
@@ -567,7 +574,7 @@ class gprpyProfile:
         '''
         # Store previous state for undo
         self.storePrevious()        
-        self.data = tools.alignTraces(self.data)      
+        self.data = gprpyTools.alignTraces(self.data)      
         # Put what you did in history
         histstr = "mygpr.alignTraces()"
         self.history.append(histstr)
@@ -646,7 +653,7 @@ class gprpyProfile:
         '''
         # Store previous state for undo
         self.storePrevious()
-        self.data = tools.dewow(self.data,window)
+        self.data = gprpyTools.dewow(self.data,window)
         # Put in history
         histstr = "mygpr.dewow(%d)" %(window)
         self.history.append(histstr)
@@ -665,7 +672,7 @@ class gprpyProfile:
         '''
         # Store previous state for undo
         self.storePrevious()
-        self.data = tools.smooth(self.data,window)
+        self.data = gprpyTools.smooth(self.data,window)
         # Put in history
         histstr = "mygpr.smooth(%d)" %(window)
         self.history.append(histstr)
@@ -686,7 +693,7 @@ class gprpyProfile:
         # Store previous state for undo
         self.storePrevious()
         # apply
-        self.data = tools.remMeanTrace(self.data,ntraces)        
+        self.data = gprpyTools.remMeanTrace(self.data,ntraces)        
         # Put in history
         histstr = "mygpr.remMeanTrace(%d)" %(ntraces)
         self.history.append(histstr)
@@ -714,7 +721,7 @@ class gprpyProfile:
         '''
         # Store previous state for undo
         self.storePrevious()
-        self.data,self.profilePos = tools.profileSmooth(self.data,self.profilePos,
+        self.data,self.profilePos = gprpyTools.profileSmooth(self.data,self.profilePos,
                                                         ntraces,noversample)
         # Put in history
         histstr = "mygpr.profileSmooth(%d,%d)" %(ntraces,noversample)
@@ -731,7 +738,7 @@ class gprpyProfile:
         # Store previous state for undo
         self.storePrevious()
         # apply tpowGain
-        self.data = tools.tpowGain(self.data,self.twtt,power)
+        self.data = gprpyTools.tpowGain(self.data,self.twtt,power)
         # Put in history
         histstr = "mygpr.tpowGain(%g)" %(power)
         self.history.append(histstr)
@@ -747,7 +754,7 @@ class gprpyProfile:
         # Store previous state for undo
         self.storePrevious()
         # apply agcGain
-        self.data = tools.agcGain(self.data,window)
+        self.data = gprpyTools.agcGain(self.data,window)
         # Put in history
         histstr = "mygpr.agcGain(%d)" %(float(window))
         self.history.append(histstr)
@@ -905,8 +912,8 @@ class gprpyProfile:
         self.storePrevious()
         self.data_pretopo = self.data
         self.twtt_pretopo = self.twtt
-        topoPos, topoVal, self.threeD = tools.prepTopo(topofile,delimiter,self.profilePos[0])
-        self.data, self.twtt, self.maxTopo, self.minTopo = tools.correctTopo(self.data,
+        topoPos, topoVal, self.threeD = gprpyTools.prepTopo(topofile,delimiter,self.profilePos[0])
+        self.data, self.twtt, self.maxTopo, self.minTopo = gprpyTools.correctTopo(self.data,
                                                                              velocity=self.velocity,
                                                                              profilePos=self.profilePos,
                                                                              topoPos=topoPos,
@@ -959,7 +966,7 @@ class gprpyProfile:
             gpsmat = gpsinfo
             
         # First get the x,y,z positions of our data points
-        x,y,z = tools.prepVTK(self.profilePos,gpsmat,smooth,win_length,porder)        
+        x,y,z = gprpyTools.prepVTK(self.profilePos,gpsmat,smooth,win_length,porder)        
         z = z*aspect     
         if self.velocity is None:
             downward = self.twtt*aspect
@@ -1075,7 +1082,7 @@ class gprpyProfile:
         x = delta * np.arange(npts)
         xf = fft.fftfreq(npts, delta)
         yf = fft.fft(data)
-        sf = st(data)
+        sf = my_stran.st(data)
 
         return x*1e9, data, np.abs(xf)*1e-6, np.abs(yf), 1/delta, np.abs(sf)
      
@@ -1084,7 +1091,7 @@ class gprpyProfile:
         cutoff = [f_min, f_max]
         fs = 1 / (self.twtt[3] - self.twtt[2]) * 1e9
         print("\nfs = ", fs)
-        self.data = butterworth(data, cutoff, fs, order=6, btype="bandpass", axis=0)
+        self.data = filters.butterworth(data, cutoff, fs, order=6, btype="bandpass", axis=0)
 
 
     # def kirchhoffmigration(self):
@@ -1234,7 +1241,7 @@ class gprpyProfile:
         
         for ix in range(nx):
             
-            data_st = st(datas[:,ix])
+            data_st = my_stran.st(datas[:,ix])
             data_st_one_trace = np.zeros_like(data_st[0, :])
             #print('data_st: ', data_st.shape)
             for j in range(idex_min, idex_max):

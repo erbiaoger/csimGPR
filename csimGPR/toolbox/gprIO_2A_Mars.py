@@ -1,11 +1,48 @@
+#!/usr/bin/env python
+# @file:           gprIO_2A_Mars.py
+# @author:         Zhiyu Zhang
+# @Institution:    JiLin University
+# @Email:          erbiaoger@gmail.com
+# @url:            erbiaoger.site
+# @date:           2023-07-18 20:45:52
+# @Description     
+# @version:        v1.0.0
+
 import numpy as np
 import os
 from glob import glob
 
-file = f'C:\\Users\\erbia\\Desktop\\csimGPR\\examples\\HX1-Ro_GRAS_RoPeR-HF-HH_SCI_N_20210525042001_20210525043243_00011_A.2B'
+# file = f'C:\\Users\\erbia\\Desktop\\csimGPR\\examples\\HX1-Ro_GRAS_RoPeR-HF-HH_SCI_N_20210525042001_20210525043243_00011_A.2B'
 
 
 def readMars2A(filename=None):
+    """csimGPR/toolbox/gprIO_2A_Mars.py made by Zhiyu Zhang JiLin University in 2023-07-18 15h.
+    Parameters
+    ----------
+    data : numpy array
+        Array shape N,D
+    cutoff : float or tuple of float
+        Cutoff frequency for the filter
+        A float for a lowpass and a highpass filters
+        A tuple (lower, upper) for a bandpass and bandstop filters
+    fs : float
+        Sampling frequency
+    order : int
+        Filter order
+    btype : {'lowpass', ‘highpass’, ‘bandpass’, ‘bandstop’}, optional
+        A type of a filter.
+        Default is lowpass
+    axis : int, optional
+        Axis to which the filter is applied.
+        Default is 0
+
+    Returns
+    -------
+    y : ndarray
+        The filtered output from the `sosfiltfilt`-function
+
+    """
+
     # 设置读取的精度
     precision4 = 'f'  # 单精度浮点数，对应于MATLAB中的single
     skip4 = 69

@@ -1,11 +1,19 @@
-# csimGPRGUI.py 用于csimGPR的图形用户界面
+#!/usr/bin/env pythoncolsp
+# @file:           csimGPRGUI.py
+# @author:         Zhiyu Zhang
+# @Institution:    JiLin University
+# @Email:          erbiaoger@gmail.com
+# @url:            erbiaoger.site
+# @date:           2023-07-18 21:10:10
+# @Description     界面部分：用于csimGPR的图形用户界面
+# @version:        v1.0.0
+
 
 import sys
 import os
 import Pmw
-import scipy.interpolate as interp
 import numpy as np
-from scipy import signal
+import scipy.interpolate as interp
 from scipy.interpolate import interp1d
 
 import tkinter as tk
@@ -18,23 +26,25 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 mpl.use('TkAgg')
 
-import csimGPR.csimGPR as gp
-import csimGPR.toolbox.csimStartGUI as csimStartGUI
+from csimGPR import csimGPR
+from csimGPR.toolbox import csimStartGUI
 
-colsp=2
-rightcol=9
-halfwid=6
-figrowsp=21+1
-figcolsp=9
+
 
 class GPRPyApp:
     '''
     GPRPy class for graphical user interface for GPR profile data
     '''
 
-    def __init__(self,master):
+    def __init__(self,master, colsp=2, rightcol=9, halfwid=6, figrowsp=21+1, figcolsp=9):
         self.window = master
 
+        self.colsp = colsp
+        self.rightcol = rightcol
+        self.halfwid = halfwid
+        self.figrowsp = figrowsp
+        self.figcolsp = figcolsp
+        
         # Set up for high-resolution screens
         normscrwidt=1280 #1024
         normscrhigt=720 #768
@@ -58,13 +68,13 @@ class GPRPyApp:
         
         # Variables specific to GUI
         self.balloon = Pmw.Balloon()
-        #self.balloon = tk.Label(master, text="balloon", height = 1, width = 2*halfwid)
-        self.picking = False       
+        #self.balloon = tk.Label(master, text="balloon", height = 1, width = 2*self.halfwid)
+        self.picking = False
         self.delimiter = None
         self.grid = False
 
         # Initialize the gprpy
-        proj = gp.gprpyProfile()
+        proj = csimGPR.gprpyProfile()
 
         # Show csimGPR screen
         #fig=Figure(figsize=(8*self.widfac,5*self.highfac))
@@ -80,7 +90,7 @@ class GPRPyApp:
         a.get_xaxis().set_visible(False)
         a.get_yaxis().set_visible(False)
         canvas = FigureCanvasTkAgg(fig, master=self.window)
-        canvas.get_tk_widget().grid(row=2,column=0,columnspan=figcolsp,rowspan=figrowsp,sticky='nsew')
+        canvas.get_tk_widget().grid(row=2,column=0,columnspan=self.figcolsp,rowspan=self.figrowsp,sticky='nsew')
 
         canvas.draw() 
 
@@ -98,7 +108,7 @@ class GPRPyApp:
             command=lambda : [self.resetYrng(proj),
                               self.undo(proj),
                               self.plotProfileData(proj,fig=fig,a=a,canvas=canvas)])
-        undoButton.config(height = 1, width = 2*halfwid)
+        undoButton.config(height = 1, width = 2*self.halfwid)
         undoButton.grid(row=0, column=0, sticky='nsew',rowspan=2)
         self.balloon.bind(undoButton,
                           "“撤消”最近的处理步骤并\n"
@@ -113,7 +123,7 @@ class GPRPyApp:
             text="全视图", fg="black",
             command=lambda : [self.setFullView(proj),
                               self.plotProfileData(proj,fig=fig,a=a,canvas=canvas)])
-        FullButton.config(height = 1, width = 2*halfwid)         
+        FullButton.config(height = 1, width = 2*self.halfwid)         
         FullButton.grid(row=0, column=1, sticky='nsew',rowspan=1)
         self.balloon.bind(FullButton,"将 x 轴和 y 轴限制重置为完整数据。")
 
@@ -121,7 +131,7 @@ class GPRPyApp:
         plotButton = tk.Button(
             text="刷新绘图",
             command=lambda : self.plotProfileData(proj,fig=fig,a=a,canvas=canvas))
-        plotButton.config(height = 1, width = 2*halfwid)
+        plotButton.config(height = 1, width = 2*self.halfwid)
         plotButton.grid(row=1, column=1, sticky='nsew',rowspan=1)
         self.balloon.bind(plotButton,
                           "修改后刷新图形\n"
@@ -133,7 +143,7 @@ class GPRPyApp:
             text="网格", fg="black",
             command=lambda : [self.toggleGrid(),
                               self.plotProfileData(proj,fig=fig,a=a,canvas=canvas)])
-        GridButton.config(height = 1, width = 2*halfwid)         
+        GridButton.config(height = 1, width = 2*self.halfwid)         
         GridButton.grid(row=0, column=2, sticky='nsew',rowspan=1)
         self.balloon.bind(GridButton,"打开/关闭网格。")
 
@@ -142,7 +152,7 @@ class GPRPyApp:
             text="纵横比", fg="black",
             command=lambda : [self.setAspect(),
                               self.plotProfileData(proj,fig=fig,a=a,canvas=canvas)])                              
-        AspButton.config(height = 1, width = 2*halfwid)         
+        AspButton.config(height = 1, width = 2*self.halfwid)         
         AspButton.grid(row=1, column=2, sticky='nsew',rowspan=1)
         self.balloon.bind(AspButton, "设置 x 轴和 y 轴之间的纵横比。")
         
@@ -151,7 +161,7 @@ class GPRPyApp:
             text="设置 x 轴范围", fg="black",
             command=lambda : [self.setXrng(),
                               self.plotProfileData(proj,fig=fig,a=a,canvas=canvas)])
-        XrngButton.config(height = 1, width = 2*halfwid)         
+        XrngButton.config(height = 1, width = 2*self.halfwid)         
         XrngButton.grid(row=0, column=3, sticky='nsew',rowspan=1)
         self.balloon.bind(XrngButton,"设置 x 轴显示限制。")
         
@@ -160,18 +170,18 @@ class GPRPyApp:
             text="设置 y 轴范围", fg="black",
             command=lambda : [self.setYrng(),
                               self.plotProfileData(proj,fig=fig,a=a,canvas=canvas)])
-        YrngButton.config(height = 1, width = 2*halfwid)         
+        YrngButton.config(height = 1, width = 2*self.halfwid)         
         YrngButton.grid(row=1, column=3, sticky='nsew',rowspan=1)
         self.balloon.bind(YrngButton,"设置 y 轴显示限制。")
 
         # Contrast
         contrtext = tk.StringVar()
         contrtext.set("对比")
-        contrlabel = tk.Label(master, textvariable=contrtext,height = 1,width = 2*halfwid)
+        contrlabel = tk.Label(master, textvariable=contrtext,height = 1,width = 2*self.halfwid)
         contrlabel.grid(row=0, column=4, sticky='nsew')
         self.balloon.bind(contrlabel,"设置色彩饱和度")
         self.contrast = tk.DoubleVar()
-        contrbox = tk.Entry(master, textvariable=self.contrast, width=2*halfwid)
+        contrbox = tk.Entry(master, textvariable=self.contrast, width=2*self.halfwid)
         contrbox.grid(row=1, column=4, sticky='nsew')
         #contr.set("1.0")
         self.contrast.set("1.0")
@@ -190,7 +200,7 @@ class GPRPyApp:
         signaltraceButton = tk.Button(
             text="单道绘图", fg="black",
             command=lambda : self.plotProfileData_new_windows_oneplus(proj))
-        signaltraceButton.config(height = 1, width = 2*halfwid)         
+        signaltraceButton.config(height = 1, width = 2*self.halfwid)         
         signaltraceButton.grid(row=0, column=6, sticky='nsew',rowspan=1)
 
         # 带通滤波 
@@ -199,14 +209,14 @@ class GPRPyApp:
             command = lambda : [self.filter(proj),
                                 self.plotProfileData(proj,fig=fig,a=a,canvas=canvas),
                                 print('Done')])
-        filterButton.config(height = 1, width = 2*halfwid)
+        filterButton.config(height = 1, width = 2*self.halfwid)
         filterButton.grid(row=1, column=6, sticky='nsew',rowspan=1)       
 
         # Export to VTK
         VTKButton = tk.Button(
             text="export to VTK", fg="black",
             command = lambda : self.exportVTK(proj))
-        VTKButton.config(height = 1, width = 2*halfwid)
+        VTKButton.config(height = 1, width = 2*self.halfwid)
         VTKButton.grid(row=0, column=7, sticky='nsew',rowspan=1)
         self.balloon.bind(VTKButton,
                           "Exports the processed figure to a\n"
@@ -217,7 +227,7 @@ class GPRPyApp:
         HistButton = tk.Button(
             text="write script", fg="black",
             command=lambda : self.writeHistory(proj))
-        HistButton.config(height = 1, width = 2*halfwid)         
+        HistButton.config(height = 1, width = 2*self.halfwid)         
         HistButton.grid(row=1, column=7, sticky='nsew',rowspan=1)
         self.balloon.bind(HistButton,
                           'Writes a python script to reproduce the \n'
@@ -236,14 +246,14 @@ class GPRPyApp:
             text="去噪", fg="black",
             command=lambda : [self.noiseCC(proj),
                             self.plotProfileData(proj,fig=fig,a=a,canvas=canvas)])
-        signaltraceButton.config(height = 1, width = 2*halfwid)         
+        signaltraceButton.config(height = 1, width = 2*self.halfwid)         
         signaltraceButton.grid(row=0, column=8, sticky='nsew',rowspan=1)
 
         # st谱
         stspectrumButton = tk.Button(
             text="st谱", fg="black",
             command=lambda : [self.stspectrum(proj)])
-        stspectrumButton.config(height = 1, width = 2*halfwid)
+        stspectrumButton.config(height = 1, width = 2*self.halfwid)
         stspectrumButton.grid(row=1, column=8, sticky='nsew',rowspan=1)
 
 
@@ -254,8 +264,8 @@ class GPRPyApp:
             text="导入数据", fg="red",
             command=lambda : [self.loadData(proj),
                               self.plotProfileData(proj,fig=fig,a=a,canvas=canvas)])
-        LoadButton.config(height = 1, width = 2*halfwid)         
-        LoadButton.grid(row=0, column=rightcol, sticky='nsew',columnspan=colsp,rowspan=2)
+        LoadButton.config(height = 1, width = 2*self.halfwid)         
+        LoadButton.grid(row=0, column=self.rightcol, sticky='nsew',columnspan=self.colsp,rowspan=2)
         self.balloon.bind(LoadButton,"加载 .2A、.2B、.gpr、.DT1 或 .DZT 数据。")
 
         
@@ -264,8 +274,8 @@ class GPRPyApp:
             text="剖面适应", fg="black",
             command=lambda : [self.adjProfile(proj),
                               self.plotProfileData(proj,fig=fig,a=a,canvas=canvas)])
-        AdjProfileButton.config(height = 1, width = 2*halfwid)         
-        AdjProfileButton.grid(row=2, column=rightcol, sticky='nsew',columnspan=colsp)
+        AdjProfileButton.config(height = 1, width = 2*self.halfwid)         
+        AdjProfileButton.grid(row=2, column=self.rightcol, sticky='nsew',columnspan=self.colsp)
         self.balloon.bind(AdjProfileButton,
                           "将配置文件长度调整为 \n"
                            "已知的开始和结束位置\n"
@@ -278,8 +288,8 @@ class GPRPyApp:
             text="设置零时刻", fg="black",
             command=lambda : [self.setZeroTime(proj),
                               self.plotProfileData(proj,fig=fig,a=a,canvas=canvas)])
-        SetZeroTimeButton.config(height = 1, width = 2*halfwid)         
-        SetZeroTimeButton.grid(row=3, column=rightcol, sticky='nsew',columnspan=colsp)    
+        SetZeroTimeButton.config(height = 1, width = 2*self.halfwid)         
+        SetZeroTimeButton.grid(row=3, column=self.rightcol, sticky='nsew',columnspan=self.colsp)    
         self.balloon.bind(SetZeroTimeButton,
                           "设置行程时间\n"
                            "对应地表。")
@@ -291,8 +301,8 @@ class GPRPyApp:
             text="道对齐", fg="black",
             command=lambda : [proj.alignTraces(),
                               self.plotProfileData(proj,fig=fig,a=a,canvas=canvas)])
-        TrAlignButton.config(height = 1, width = 2*halfwid)         
-        TrAlignButton.grid(row=4, column=rightcol, sticky='nsew',columnspan=colsp)
+        TrAlignButton.config(height = 1, width = 2*self.halfwid)         
+        TrAlignButton.grid(row=4, column=self.rightcol, sticky='nsew',columnspan=self.colsp)
         self.balloon.bind(TrAlignButton,
                          '自动向上或向下移动每条迹线，\n'
                          '使各个迹线的最大幅度对齐。 \n'
@@ -306,8 +316,8 @@ class GPRPyApp:
             text="Y方向裁剪", fg="black",
             command=lambda : [self.truncateY(proj),
                               self.plotProfileData(proj,fig=fig,a=a,canvas=canvas)])
-        truncYButton.config(height = 1, width = 2*halfwid)         
-        truncYButton.grid(row=5, column=rightcol+1, sticky='nsew')
+        truncYButton.config(height = 1, width = 2*self.halfwid)         
+        truncYButton.grid(row=5, column=self.rightcol+1, sticky='nsew')
         self.balloon.bind(truncYButton,
                           '删除到达时间晚于所选值的数据点。\n'
                            '如果给定速度：删除深度大于所选值的数据点.')   
@@ -320,8 +330,8 @@ class GPRPyApp:
             command=lambda : [self.cut(proj),
                               self.setFullView(proj),
                               self.plotProfileData(proj,fig=fig,a=a,canvas=canvas)])
-        cutButton.config(height = 1, width = 2*halfwid)         
-        cutButton.grid(row=5, column=rightcol, sticky='nsew')
+        cutButton.config(height = 1, width = 2*self.halfwid)         
+        cutButton.grid(row=5, column=self.rightcol, sticky='nsew')
         self.balloon.bind(cutButton,
                           "将数据修剪到所需的沿剖面范围。") 
 
@@ -331,8 +341,8 @@ class GPRPyApp:
         #     # command=lambda : [self.kirchhoffmigration(proj),
         #     #                   self.plotProfileData(proj,fig=fig,a=a,canvas=canvas)])
         #     command=lambda : [])
-        # kfmigrationButton.config(height = 1, width = 2*halfwid)         
-        # kfmigrationButton.grid(row=6, column=rightcol, sticky='nsew',columnspan=colsp)
+        # kfmigrationButton.config(height = 1, width = 2*self.halfwid)         
+        # kfmigrationButton.grid(row=6, column=self.rightcol, sticky='nsew',columnspan=self.colsp)
         # self.balloon.bind(kfmigrationButton,
         #                   "Trace-wise 低切滤波器。 \n"
         #                   "从每个轨迹中删除所选窗口宽度的运行平均值。")
@@ -341,8 +351,8 @@ class GPRPyApp:
             text="科希霍夫偏移", fg="black",
             command=lambda : [self.kirchhoffmigration(proj),
                             self.plotProfileData(proj,fig=fig,a=a,canvas=canvas)])
-        kirchhoffmigrationButton.config(height = 1, width = 2*halfwid)
-        kirchhoffmigrationButton.grid(row=6, column=rightcol, sticky='nsew',columnspan=colsp)
+        kirchhoffmigrationButton.config(height = 1, width = 2*self.halfwid)
+        kirchhoffmigrationButton.grid(row=6, column=self.rightcol, sticky='nsew',columnspan=self.colsp)
         self.balloon.bind(kirchhoffmigrationButton,
                             "绘制曲线。")
         
@@ -351,8 +361,8 @@ class GPRPyApp:
             text="dewow", fg="black",
             command=lambda : [self.dewow(proj),
                               self.plotProfileData(proj,fig=fig,a=a,canvas=canvas)])
-        DewowButton.config(height = 1, width = 2*halfwid)         
-        DewowButton.grid(row=7, column=rightcol, sticky='nsew',columnspan=colsp)
+        DewowButton.config(height = 1, width = 2*self.halfwid)         
+        DewowButton.grid(row=7, column=self.rightcol, sticky='nsew',columnspan=self.colsp)
         self.balloon.bind(DewowButton,
                           "Trace-wise 低切滤波器。 \n"
                           "从每个轨迹中删除所选窗口宽度的运行平均值。")
@@ -363,8 +373,8 @@ class GPRPyApp:
             text="去平均", fg="black",
             command=lambda : [self.remMeanTrace(proj),
                               self.plotProfileData(proj,fig=fig,a=a,canvas=canvas)])
-        remMeanTraceButton.config(height = 1, width = 2*halfwid)         
-        remMeanTraceButton.grid(row=8, column=rightcol, sticky='nsew',columnspan=colsp)
+        remMeanTraceButton.config(height = 1, width = 2*self.halfwid)         
+        remMeanTraceButton.grid(row=8, column=self.rightcol, sticky='nsew',columnspan=self.colsp)
         self.balloon.bind(remMeanTraceButton,
                           "从每条轨迹中删除平均值\n"
                            "它周围的痕迹。这可以是\n"
@@ -377,8 +387,8 @@ class GPRPyApp:
             text="光滑 (temp)", fg="black",
             command=lambda : [self.smooth(proj),
                               self.plotProfileData(proj,fig=fig,a=a,canvas=canvas)])
-        SmoothButton.config(height = 1, width = 2*halfwid)         
-        SmoothButton.grid(row=9, column=rightcol, sticky='nsew',columnspan=colsp)
+        SmoothButton.config(height = 1, width = 2*self.halfwid)         
+        SmoothButton.grid(row=9, column=self.rightcol, sticky='nsew',columnspan=self.colsp)
         self.balloon.bind(SmoothButton,
                           "Trace-wise 高切滤波器。\n"
                           "用所选窗口宽度的运行平均值替换轨迹中的每个样本。")
@@ -392,8 +402,8 @@ class GPRPyApp:
             text="剖面平滑", fg="black",
             command=lambda : [self.profileSmooth(proj),
                               self.plotProfileData(proj,fig=fig,a=a,canvas=canvas)])
-        profSmButton.config(height = 1, width = 2*halfwid)         
-        profSmButton.grid(row=10, column=rightcol, sticky='nsew',columnspan=colsp)
+        profSmButton.config(height = 1, width = 2*self.halfwid)         
+        profSmButton.grid(row=10, column=self.rightcol, sticky='nsew',columnspan=self.colsp)
         self.balloon.bind(profSmButton,
                           "首先对配置文件进行过采样（制作每个轨迹的“n”个副本），\n"
                           "然后用其相邻“m”个轨迹的平均值替换每个轨迹。")
@@ -405,8 +415,8 @@ class GPRPyApp:
             text="t-功率增益", fg="black",
             command=lambda : [self.tpowGain(proj),
                               self.plotProfileData(proj,fig=fig,a=a,canvas=canvas)])
-        tpowButton.config(height=1, width=halfwid)
-        tpowButton.grid(row=11, column=rightcol, sticky='nsew')
+        tpowButton.config(height=1, width=self.halfwid)
+        tpowButton.grid(row=11, column=self.rightcol, sticky='nsew')
         self.balloon.bind(tpowButton,
                           "t-功率增益。 将信号的功率增加（行程时间）^p 倍，\n"
                           "其中用户提供 p。 这种增益往往不如 agc 激进。")
@@ -416,8 +426,8 @@ class GPRPyApp:
             text="自动增益控制",fg="black",
             command=lambda : [self.agcGain(proj),
                               self.plotProfileData(proj,fig=fig,a=a,canvas=canvas)])
-        agcButton.config(height=1, width=halfwid)
-        agcButton.grid(row=11, column=rightcol+1, sticky='nsew')
+        agcButton.config(height=1, width=self.halfwid)
+        agcButton.grid(row=11, column=self.rightcol+1, sticky='nsew')
         self.balloon.bind(agcButton,
                           "自动增益控制。沿着每个道，\n"
                           "规范化信号的功率给定样本窗口。")
@@ -426,8 +436,8 @@ class GPRPyApp:
         hypButton = tk.Button(
             text="绘制双曲线", fg="black",
             command=lambda : [self.showHyp(proj,a), canvas.draw()])
-        hypButton.config(height = 1, width = 2*halfwid)
-        hypButton.grid(row=12, column=rightcol, sticky='nsew',columnspan=colsp)
+        hypButton.config(height = 1, width = 2*self.halfwid)
+        hypButton.grid(row=12, column=self.rightcol, sticky='nsew',columnspan=self.colsp)
         self.balloon.bind(hypButton,
                           "根据剖面位置、走时和估计速度绘制双曲线。\n"
                           "当数据中出现双曲线时，这可以用于找到地下速度。\n"
@@ -440,8 +450,8 @@ class GPRPyApp:
             text="设置速度", fg="black",
             command=lambda : [self.setVelocity(proj),
                               self.plotProfileData(proj,fig=fig,a=a,canvas=canvas)])
-        setVelButton.config(height = 1, width = 2*halfwid)         
-        setVelButton.grid(row=13, column=rightcol, sticky='nsew',columnspan=colsp)
+        setVelButton.config(height = 1, width = 2*self.halfwid)         
+        setVelButton.grid(row=13, column=self.rightcol, sticky='nsew',columnspan=self.colsp)
         self.balloon.bind(setVelButton,
                           "设置已知的地下雷达速度。这将将y轴从\n"
                           "走时转换为深度。这一步是进行地形校正所必需的。")
@@ -453,8 +463,8 @@ class GPRPyApp:
             text="天线偏移校正", fg="black",
             command=lambda : [self.antennaSep(proj),
                               self.plotProfileData(proj,fig=fig,a=a,canvas=canvas)])
-        antennaSepButton.config(height = 1, width = 2*halfwid)         
-        antennaSepButton.grid(row=14, column=rightcol, sticky='nsew',columnspan=colsp)
+        antennaSepButton.config(height = 1, width = 2*self.halfwid)         
+        antennaSepButton.grid(row=14, column=self.rightcol, sticky='nsew',columnspan=self.colsp)
         self.balloon.bind(antennaSepButton,                        
                           "如果提供了天线偏移量，则纠正由于发射\n"
                           "和接收天线之间的分离而导致的接收时间扭曲。\n"
@@ -467,8 +477,8 @@ class GPRPyApp:
             text="fk 偏移", fg="black",
             command=lambda : [self.fkMigration(proj),
                               self.plotProfileData(proj,fig=fig,a=a,canvas=canvas)])
-        migButton.config(height = 1, width = 2*halfwid)         
-        migButton.grid(row=15, column=rightcol, sticky='nsew',columnspan=colsp)
+        migButton.config(height = 1, width = 2*self.halfwid)         
+        migButton.grid(row=15, column=self.rightcol, sticky='nsew',columnspan=self.colsp)
         self.balloon.bind(migButton,
                           "使用最初为CREWES软件包编写的Matlab代码\n"
                           "进行Stolt的fk偏移。由Nat Wilson翻译成Python 2。")     
@@ -480,8 +490,8 @@ class GPRPyApp:
             text="地形校正", fg="black",
             command=lambda : [self.topoCorrect(proj),
                               self.plotProfileData(proj,fig=fig,a=a,canvas=canvas)])
-        topoCorrectButton.config(height = 1, width = 2*halfwid)
-        topoCorrectButton.grid(row=16, column=rightcol, sticky='nsew',columnspan=colsp)
+        topoCorrectButton.config(height = 1, width = 2*self.halfwid)
+        topoCorrectButton.grid(row=16, column=self.rightcol, sticky='nsew',columnspan=self.colsp)
         self.balloon.bind(topoCorrectButton,
                           "读取一个逗号或制表符分隔的文件，\n"
                           "其中包含3列（东坐标、北坐标、高程）\n"
@@ -493,8 +503,8 @@ class GPRPyApp:
         startPickButton = tk.Button(
             text="start pick", fg="black",
             command=lambda : self.startPicking(proj,fig=fig,a=a,canvas=canvas))        
-        startPickButton.config(height = 1, width = halfwid)
-        startPickButton.grid(row=17, column=rightcol, sticky='nsew',columnspan=1)
+        startPickButton.config(height = 1, width = self.halfwid)
+        startPickButton.grid(row=17, column=self.rightcol, sticky='nsew',columnspan=1)
         self.balloon.bind(startPickButton,
                           "Start collecting location information\n" 
                           "by clicking on the profile.")  
@@ -505,8 +515,8 @@ class GPRPyApp:
             command=lambda : [self.stopPicking(proj,canvas),
                               self.plotProfileData(proj,fig=fig,a=a,canvas=canvas)])
         
-        stopPickButton.config(height = 1, width = halfwid)
-        stopPickButton.grid(row=17, column=rightcol+1, sticky='nsew',columnspan=1)
+        stopPickButton.config(height = 1, width = self.halfwid)
+        stopPickButton.grid(row=17, column=self.rightcol+1, sticky='nsew',columnspan=1)
         self.balloon.bind(stopPickButton,
                           "Stop collecting location information\n"
                           "and save the locations you collected\n"
@@ -516,8 +526,8 @@ class GPRPyApp:
         SaveButton = tk.Button(
             text="保存数据", fg="black",
             command=lambda : self.saveData(proj))
-        SaveButton.config(height = 1, width = 2*halfwid)         
-        SaveButton.grid(row=18, column=rightcol, sticky='nsew',columnspan=colsp)
+        SaveButton.config(height = 1, width = 2*self.halfwid)         
+        SaveButton.grid(row=18, column=self.rightcol, sticky='nsew',columnspan=self.colsp)
         self.balloon.bind(SaveButton,
                           "将处理后的数据以及处理历史保存在一个 .gpr 文件中。\n"
                           "生成的文件将包含所使用数据和地形文件的绝对路径名。\n"
@@ -529,8 +539,8 @@ class GPRPyApp:
         PrintButton = tk.Button(
             text="保存图片", fg="black",
             command=lambda : self.printProfileFig(proj=proj,fig=fig))
-        PrintButton.config(height = 1, width = 2*halfwid)         
-        PrintButton.grid(row=19, column=rightcol, sticky='nsew',columnspan=colsp)
+        PrintButton.config(height = 1, width = 2*self.halfwid)         
+        PrintButton.grid(row=19, column=self.rightcol, sticky='nsew',columnspan=self.colsp)
         self.balloon.bind(PrintButton,
                           "以选择的分辨率将当前可见的图形保存为 PDF。\n"
                           "如果当前图形上有双曲线，则双曲线也会出现在\n"
@@ -540,23 +550,18 @@ class GPRPyApp:
         getPointButton = tk.Button(
             text="getPoint", fg="black",
             command=lambda : self.getPoint(proj, fig,a,canvas))
-        getPointButton.config(height = 1, width = 2*halfwid)
-        getPointButton.grid(row=20, column=rightcol, sticky='nsew',columnspan=colsp)
+        getPointButton.config(height = 1, width = 2*self.halfwid)
+        getPointButton.grid(row=20, column=self.rightcol, sticky='nsew',columnspan=self.colsp)
         self.balloon.bind(getPointButton,
                             "使用Diffrapy软件包进行处理。")
         
         plotCurvesButton = tk.Button(
             text="plot curves", fg="black",
             command=lambda : self.plotCurves(proj,a,canvas))
-        plotCurvesButton.config(height = 1, width = 2*halfwid)
-        plotCurvesButton.grid(row=21, column=rightcol, sticky='nsew',columnspan=colsp)
+        plotCurvesButton.config(height = 1, width = 2*self.halfwid)
+        plotCurvesButton.grid(row=21, column=self.rightcol, sticky='nsew',columnspan=self.colsp)
         self.balloon.bind(plotCurvesButton,
                             "绘制曲线。")
-<<<<<<< HEAD
-        
-
-=======
->>>>>>> f577a0b15a32caf0ff7a76dd5cd48d3a368d1d2e
 
     def stspectrum(self, proj):
         
@@ -939,10 +944,6 @@ class GPRPyApp:
             proj.writeHistory(filename)
             print("Wrote script to " + filename)
 
-<<<<<<< HEAD
-=======
-    #TAG: plotProfileData
->>>>>>> f577a0b15a32caf0ff7a76dd5cd48d3a368d1d2e
     def plotProfileData(self,proj,fig,a,canvas):
         # Clear cursor coordinate cid if if exists to avoid multiple instances
         print('\nDoing plotProfileData ...')
@@ -1013,7 +1014,7 @@ class GPRPyApp:
         self.cursor_cid = canvas.mpl_connect('button_press_event', moved)
         tag = canvas.get_tk_widget().create_text(20, 20, text="", anchor="nw")
 
-        canvas.get_tk_widget().grid(row=2,column=0,columnspan=figcolsp, rowspan=figrowsp, sticky='nsew')
+        canvas.get_tk_widget().grid(row=2,column=0,columnspan=self.figcolsp, rowspan=self.figrowsp, sticky='nsew')
         canvas.draw()
         
 
@@ -1142,7 +1143,7 @@ class GPRPyApp:
         curves[str(len(curves))] = np.vstack((xx, yy)).T
 
         curves = dict(sorted(curves.items(), key=lambda x: x[0]))
-        print(curves)
+        # print(curves)
 
         print('curves', len(curves))
         for i in range(len(curves)-1):
@@ -1162,13 +1163,9 @@ class GPRPyApp:
         fig.tight_layout()
         canvas = FigureCanvasTkAgg(fig, master=newroot)
         canvas.get_tk_widget().grid(row=1, column=1, columnspan=10, rowspan=8, sticky='nsew')
-<<<<<<< HEAD
         canvas.draw()
 
     def kirchhoffmigration(self, proj):
         print("\nDoing Kirchhoffmigration...")
         proj.kirchhoffmigration()
         print("Kirchhoffmigration Done.\n")
-=======
-        canvas.draw()
->>>>>>> f577a0b15a32caf0ff7a76dd5cd48d3a368d1d2e

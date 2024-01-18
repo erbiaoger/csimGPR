@@ -1,12 +1,22 @@
-# filters.py 用于滤波
+#!/usr/bin/env python
+# @file:           filters.py
+# @author:         Zhiyu Zhang
+# @Institution:    JiLin University
+# @Email:          erbiaoger@gmail.com
+# @url:            erbiaoger.site
+# @date:           2023-07-18 20:48:56
+# @Description     用于滤波
+# @version:        v1.0.0
+
 
 from numpy import asarray
 from scipy.signal import sosfiltfilt, butter as signal_butter
 
 
 def butterworth(data, cutoff, fs, order=6, btype="bandpass", axis=0):
-    """Butterworth sosfiltfilt (forward-backward filter).
-
+    """csimGPR/toolbox/filters.py made by Zhiyu Zhang JiLin University in 2023-07-18 15h.
+    Butterworth sosfiltfilt (forward-backward filter).
+    
     Parameters
     ----------
     data : numpy array
@@ -28,7 +38,7 @@ def butterworth(data, cutoff, fs, order=6, btype="bandpass", axis=0):
 
     Returns
     -------
-    y : ndarray
+    sosfiltfilt : ndarray
         The filtered output from the `sosfiltfilt`-function
     """
     if isinstance(cutoff, (list, tuple)):

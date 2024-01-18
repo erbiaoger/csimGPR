@@ -2,9 +2,6 @@ import numpy as np
 import os
 from glob import glob
 
-# file = f'C:\\Users\\erbia\\Desktop\\csimGPR\\examples\\HX1-Ro_GRAS_RoPeR-HF-HH_SCI_N_20210525042001_20210525043243_00011_A.2B'
-
-
 def read2B(filename=None):
     # 设置读取的精度
     precision4 = 'f'  # 单精度浮点数，对应于MATLAB中的single
