@@ -30,8 +30,6 @@ else:
 
 
 
-
-
 # ## question 1
 # ### FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/nz/m3bx1d092tl_6x3ktkj67nxc0000gn/T/_MEIruL6Ek/csimGPR/startGUIdat/JLU.jpg
 # # solution

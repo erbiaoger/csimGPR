@@ -614,6 +614,22 @@
         "documentation": {}
     },
     {
+        "label": "*",
+        "importPath": "gprpy.interpSurface",
+        "description": "gprpy.interpSurface",
+        "isExtraImport": true,
+        "detail": "gprpy.interpSurface",
+        "documentation": {}
+    },
+    {
+        "label": "mergeProfiles",
+        "importPath": "gprpy.mergeProfiles",
+        "description": "gprpy.mergeProfiles",
+        "isExtraImport": true,
+        "detail": "gprpy.mergeProfiles",
+        "documentation": {}
+    },
+    {
         "label": "call",
         "importPath": "subprocess",
         "description": "subprocess",
@@ -1368,129 +1384,12 @@
         "documentation": {}
     },
     {
-        "label": "#ScanNum",
+        "label": "mygpr",
         "kind": 5,
-        "importPath": "test_LPR.Read_data_500MHz_002A",
-        "description": "test_LPR.Read_data_500MHz_002A",
-        "peekOfCode": "#ScanNum = 1063; #����\nScanNum = 8328\n#ScanNum = 3329; #����\nRecLen = 8283\nSampleNum = 2048\nRecOffset = 90\nLabNum = 4\nDatclonNum = ScanNum - 1\n#fin = fopen('/home/user/LPR/2A/CE4_GRAS_LPR-2A_SCI_N_20190104004000_20190109213900_0001_A.2A','rb');\n#fin = fopen('/home/user/LPR/LPR_data/First/4 LPR/2A/CE4_GRAS_LPR-1_SCI_N_20190109213901_20190111150200_0002_A.2A','rb');",
-        "detail": "test_LPR.Read_data_500MHz_002A",
-        "documentation": {}
-    },
-    {
-        "label": "ScanNum",
-        "kind": 5,
-        "importPath": "test_LPR.Read_data_500MHz_002A",
-        "description": "test_LPR.Read_data_500MHz_002A",
-        "peekOfCode": "ScanNum = 8328\n#ScanNum = 3329; #����\nRecLen = 8283\nSampleNum = 2048\nRecOffset = 90\nLabNum = 4\nDatclonNum = ScanNum - 1\n#fin = fopen('/home/user/LPR/2A/CE4_GRAS_LPR-2A_SCI_N_20190104004000_20190109213900_0001_A.2A','rb');\n#fin = fopen('/home/user/LPR/LPR_data/First/4 LPR/2A/CE4_GRAS_LPR-1_SCI_N_20190109213901_20190111150200_0002_A.2A','rb');\n#fin = fopen('/home/user/LPR/2A/CE4_GRAS_LPR-2A_SCI_N_20190109213901_20190111150200_0002_A.2A','rb');",
-        "detail": "test_LPR.Read_data_500MHz_002A",
-        "documentation": {}
-    },
-    {
-        "label": "#ScanNum",
-        "kind": 5,
-        "importPath": "test_LPR.Read_data_500MHz_002A",
-        "description": "test_LPR.Read_data_500MHz_002A",
-        "peekOfCode": "#ScanNum = 3329; #����\nRecLen = 8283\nSampleNum = 2048\nRecOffset = 90\nLabNum = 4\nDatclonNum = ScanNum - 1\n#fin = fopen('/home/user/LPR/2A/CE4_GRAS_LPR-2A_SCI_N_20190104004000_20190109213900_0001_A.2A','rb');\n#fin = fopen('/home/user/LPR/LPR_data/First/4 LPR/2A/CE4_GRAS_LPR-1_SCI_N_20190109213901_20190111150200_0002_A.2A','rb');\n#fin = fopen('/home/user/LPR/2A/CE4_GRAS_LPR-2A_SCI_N_20190109213901_20190111150200_0002_A.2A','rb');\npath = pwd",
-        "detail": "test_LPR.Read_data_500MHz_002A",
-        "documentation": {}
-    },
-    {
-        "label": "RecLen",
-        "kind": 5,
-        "importPath": "test_LPR.Read_data_500MHz_002A",
-        "description": "test_LPR.Read_data_500MHz_002A",
-        "peekOfCode": "RecLen = 8283\nSampleNum = 2048\nRecOffset = 90\nLabNum = 4\nDatclonNum = ScanNum - 1\n#fin = fopen('/home/user/LPR/2A/CE4_GRAS_LPR-2A_SCI_N_20190104004000_20190109213900_0001_A.2A','rb');\n#fin = fopen('/home/user/LPR/LPR_data/First/4 LPR/2A/CE4_GRAS_LPR-1_SCI_N_20190109213901_20190111150200_0002_A.2A','rb');\n#fin = fopen('/home/user/LPR/2A/CE4_GRAS_LPR-2A_SCI_N_20190109213901_20190111150200_0002_A.2A','rb');\npath = pwd\nfin = open(np.array([path,'/','LPR_data/First/4 LPR/2A/CE4_GRAS_LPR-1_SCI_N_20190109213901_20190111150200_0002_A.2A']),'rb')",
-        "detail": "test_LPR.Read_data_500MHz_002A",
-        "documentation": {}
-    },
-    {
-        "label": "SampleNum",
-        "kind": 5,
-        "importPath": "test_LPR.Read_data_500MHz_002A",
-        "description": "test_LPR.Read_data_500MHz_002A",
-        "peekOfCode": "SampleNum = 2048\nRecOffset = 90\nLabNum = 4\nDatclonNum = ScanNum - 1\n#fin = fopen('/home/user/LPR/2A/CE4_GRAS_LPR-2A_SCI_N_20190104004000_20190109213900_0001_A.2A','rb');\n#fin = fopen('/home/user/LPR/LPR_data/First/4 LPR/2A/CE4_GRAS_LPR-1_SCI_N_20190109213901_20190111150200_0002_A.2A','rb');\n#fin = fopen('/home/user/LPR/2A/CE4_GRAS_LPR-2A_SCI_N_20190109213901_20190111150200_0002_A.2A','rb');\npath = pwd\nfin = open(np.array([path,'/','LPR_data/First/4 LPR/2A/CE4_GRAS_LPR-1_SCI_N_20190109213901_20190111150200_0002_A.2A']),'rb')\nfout = open(np.array([path,'/','LPR_data/First/4 LPR/2A2.dat']),'wt')",
-        "detail": "test_LPR.Read_data_500MHz_002A",
-        "documentation": {}
-    },
-    {
-        "label": "RecOffset",
-        "kind": 5,
-        "importPath": "test_LPR.Read_data_500MHz_002A",
-        "description": "test_LPR.Read_data_500MHz_002A",
-        "peekOfCode": "RecOffset = 90\nLabNum = 4\nDatclonNum = ScanNum - 1\n#fin = fopen('/home/user/LPR/2A/CE4_GRAS_LPR-2A_SCI_N_20190104004000_20190109213900_0001_A.2A','rb');\n#fin = fopen('/home/user/LPR/LPR_data/First/4 LPR/2A/CE4_GRAS_LPR-1_SCI_N_20190109213901_20190111150200_0002_A.2A','rb');\n#fin = fopen('/home/user/LPR/2A/CE4_GRAS_LPR-2A_SCI_N_20190109213901_20190111150200_0002_A.2A','rb');\npath = pwd\nfin = open(np.array([path,'/','LPR_data/First/4 LPR/2A/CE4_GRAS_LPR-1_SCI_N_20190109213901_20190111150200_0002_A.2A']),'rb')\nfout = open(np.array([path,'/','LPR_data/First/4 LPR/2A2.dat']),'wt')\n# Data=zeros(SampleNum);",
-        "detail": "test_LPR.Read_data_500MHz_002A",
-        "documentation": {}
-    },
-    {
-        "label": "LabNum",
-        "kind": 5,
-        "importPath": "test_LPR.Read_data_500MHz_002A",
-        "description": "test_LPR.Read_data_500MHz_002A",
-        "peekOfCode": "LabNum = 4\nDatclonNum = ScanNum - 1\n#fin = fopen('/home/user/LPR/2A/CE4_GRAS_LPR-2A_SCI_N_20190104004000_20190109213900_0001_A.2A','rb');\n#fin = fopen('/home/user/LPR/LPR_data/First/4 LPR/2A/CE4_GRAS_LPR-1_SCI_N_20190109213901_20190111150200_0002_A.2A','rb');\n#fin = fopen('/home/user/LPR/2A/CE4_GRAS_LPR-2A_SCI_N_20190109213901_20190111150200_0002_A.2A','rb');\npath = pwd\nfin = open(np.array([path,'/','LPR_data/First/4 LPR/2A/CE4_GRAS_LPR-1_SCI_N_20190109213901_20190111150200_0002_A.2A']),'rb')\nfout = open(np.array([path,'/','LPR_data/First/4 LPR/2A2.dat']),'wt')\n# Data=zeros(SampleNum);\nfor i in np.arange(1,ScanNum - LabNum+1).reshape(-1):",
-        "detail": "test_LPR.Read_data_500MHz_002A",
-        "documentation": {}
-    },
-    {
-        "label": "DatclonNum",
-        "kind": 5,
-        "importPath": "test_LPR.Read_data_500MHz_002A",
-        "description": "test_LPR.Read_data_500MHz_002A",
-        "peekOfCode": "DatclonNum = ScanNum - 1\n#fin = fopen('/home/user/LPR/2A/CE4_GRAS_LPR-2A_SCI_N_20190104004000_20190109213900_0001_A.2A','rb');\n#fin = fopen('/home/user/LPR/LPR_data/First/4 LPR/2A/CE4_GRAS_LPR-1_SCI_N_20190109213901_20190111150200_0002_A.2A','rb');\n#fin = fopen('/home/user/LPR/2A/CE4_GRAS_LPR-2A_SCI_N_20190109213901_20190111150200_0002_A.2A','rb');\npath = pwd\nfin = open(np.array([path,'/','LPR_data/First/4 LPR/2A/CE4_GRAS_LPR-1_SCI_N_20190109213901_20190111150200_0002_A.2A']),'rb')\nfout = open(np.array([path,'/','LPR_data/First/4 LPR/2A2.dat']),'wt')\n# Data=zeros(SampleNum);\nfor i in np.arange(1,ScanNum - LabNum+1).reshape(-1):\n    fseek(fin,RecOffset + RecLen * (i + LabNum - 1),'bof')",
-        "detail": "test_LPR.Read_data_500MHz_002A",
-        "documentation": {}
-    },
-    {
-        "label": "#fin",
-        "kind": 5,
-        "importPath": "test_LPR.Read_data_500MHz_002A",
-        "description": "test_LPR.Read_data_500MHz_002A",
-        "peekOfCode": "#fin = fopen('/home/user/LPR/2A/CE4_GRAS_LPR-2A_SCI_N_20190104004000_20190109213900_0001_A.2A','rb');\n#fin = fopen('/home/user/LPR/LPR_data/First/4 LPR/2A/CE4_GRAS_LPR-1_SCI_N_20190109213901_20190111150200_0002_A.2A','rb');\n#fin = fopen('/home/user/LPR/2A/CE4_GRAS_LPR-2A_SCI_N_20190109213901_20190111150200_0002_A.2A','rb');\npath = pwd\nfin = open(np.array([path,'/','LPR_data/First/4 LPR/2A/CE4_GRAS_LPR-1_SCI_N_20190109213901_20190111150200_0002_A.2A']),'rb')\nfout = open(np.array([path,'/','LPR_data/First/4 LPR/2A2.dat']),'wt')\n# Data=zeros(SampleNum);\nfor i in np.arange(1,ScanNum - LabNum+1).reshape(-1):\n    fseek(fin,RecOffset + RecLen * (i + LabNum - 1),'bof')\n    A = fread(fin,SampleNum,'float32')",
-        "detail": "test_LPR.Read_data_500MHz_002A",
-        "documentation": {}
-    },
-    {
-        "label": "#fin",
-        "kind": 5,
-        "importPath": "test_LPR.Read_data_500MHz_002A",
-        "description": "test_LPR.Read_data_500MHz_002A",
-        "peekOfCode": "#fin = fopen('/home/user/LPR/LPR_data/First/4 LPR/2A/CE4_GRAS_LPR-1_SCI_N_20190109213901_20190111150200_0002_A.2A','rb');\n#fin = fopen('/home/user/LPR/2A/CE4_GRAS_LPR-2A_SCI_N_20190109213901_20190111150200_0002_A.2A','rb');\npath = pwd\nfin = open(np.array([path,'/','LPR_data/First/4 LPR/2A/CE4_GRAS_LPR-1_SCI_N_20190109213901_20190111150200_0002_A.2A']),'rb')\nfout = open(np.array([path,'/','LPR_data/First/4 LPR/2A2.dat']),'wt')\n# Data=zeros(SampleNum);\nfor i in np.arange(1,ScanNum - LabNum+1).reshape(-1):\n    fseek(fin,RecOffset + RecLen * (i + LabNum - 1),'bof')\n    A = fread(fin,SampleNum,'float32')\n    for k in np.arange(1,SampleNum+1).reshape(-1):",
-        "detail": "test_LPR.Read_data_500MHz_002A",
-        "documentation": {}
-    },
-    {
-        "label": "#fin",
-        "kind": 5,
-        "importPath": "test_LPR.Read_data_500MHz_002A",
-        "description": "test_LPR.Read_data_500MHz_002A",
-        "peekOfCode": "#fin = fopen('/home/user/LPR/2A/CE4_GRAS_LPR-2A_SCI_N_20190109213901_20190111150200_0002_A.2A','rb');\npath = pwd\nfin = open(np.array([path,'/','LPR_data/First/4 LPR/2A/CE4_GRAS_LPR-1_SCI_N_20190109213901_20190111150200_0002_A.2A']),'rb')\nfout = open(np.array([path,'/','LPR_data/First/4 LPR/2A2.dat']),'wt')\n# Data=zeros(SampleNum);\nfor i in np.arange(1,ScanNum - LabNum+1).reshape(-1):\n    fseek(fin,RecOffset + RecLen * (i + LabNum - 1),'bof')\n    A = fread(fin,SampleNum,'float32')\n    for k in np.arange(1,SampleNum+1).reshape(-1):\n        fout.write('%f ' % (A(k)))",
-        "detail": "test_LPR.Read_data_500MHz_002A",
-        "documentation": {}
-    },
-    {
-        "label": "path",
-        "kind": 5,
-        "importPath": "test_LPR.Read_data_500MHz_002A",
-        "description": "test_LPR.Read_data_500MHz_002A",
-        "peekOfCode": "path = pwd\nfin = open(np.array([path,'/','LPR_data/First/4 LPR/2A/CE4_GRAS_LPR-1_SCI_N_20190109213901_20190111150200_0002_A.2A']),'rb')\nfout = open(np.array([path,'/','LPR_data/First/4 LPR/2A2.dat']),'wt')\n# Data=zeros(SampleNum);\nfor i in np.arange(1,ScanNum - LabNum+1).reshape(-1):\n    fseek(fin,RecOffset + RecLen * (i + LabNum - 1),'bof')\n    A = fread(fin,SampleNum,'float32')\n    for k in np.arange(1,SampleNum+1).reshape(-1):\n        fout.write('%f ' % (A(k)))\n        if rem(k,SampleNum) == 0:",
-        "detail": "test_LPR.Read_data_500MHz_002A",
-        "documentation": {}
-    },
-    {
-        "label": "fin",
-        "kind": 5,
-        "importPath": "test_LPR.Read_data_500MHz_002A",
-        "description": "test_LPR.Read_data_500MHz_002A",
-        "peekOfCode": "fin = open(np.array([path,'/','LPR_data/First/4 LPR/2A/CE4_GRAS_LPR-1_SCI_N_20190109213901_20190111150200_0002_A.2A']),'rb')\nfout = open(np.array([path,'/','LPR_data/First/4 LPR/2A2.dat']),'wt')\n# Data=zeros(SampleNum);\nfor i in np.arange(1,ScanNum - LabNum+1).reshape(-1):\n    fseek(fin,RecOffset + RecLen * (i + LabNum - 1),'bof')\n    A = fread(fin,SampleNum,'float32')\n    for k in np.arange(1,SampleNum+1).reshape(-1):\n        fout.write('%f ' % (A(k)))\n        if rem(k,SampleNum) == 0:\n            fout.write('\\n' % ())",
-        "detail": "test_LPR.Read_data_500MHz_002A",
-        "documentation": {}
-    },
-    {
-        "label": "fout",
-        "kind": 5,
-        "importPath": "test_LPR.Read_data_500MHz_002A",
-        "description": "test_LPR.Read_data_500MHz_002A",
-        "peekOfCode": "fout = open(np.array([path,'/','LPR_data/First/4 LPR/2A2.dat']),'wt')\n# Data=zeros(SampleNum);\nfor i in np.arange(1,ScanNum - LabNum+1).reshape(-1):\n    fseek(fin,RecOffset + RecLen * (i + LabNum - 1),'bof')\n    A = fread(fin,SampleNum,'float32')\n    for k in np.arange(1,SampleNum+1).reshape(-1):\n        fout.write('%f ' % (A(k)))\n        if rem(k,SampleNum) == 0:\n            fout.write('\\n' % ())\nfclose(fin)",
-        "detail": "test_LPR.Read_data_500MHz_002A",
+        "importPath": "examples.examplescripts.exampleDrawPicked",
+        "description": "examples.examplescripts.exampleDrawPicked",
+        "peekOfCode": "mygpr = gp.gprpyProfile()\nmygpr.importdata('../exampledata/GSSI/FILE____032.DZT')\nmygpr.setZeroTime(5)\nmygpr.dewow(999999)\nmygpr.remMeanTrace(9999999)\nmygpr.setVelocity(0.14)\nmygpr.fkMigration()\nmygpr.topoCorrect('../exampledata/GSSI/FILE____032p.txt',delimiter='\\t')\n# To draw your picked line on top of your profile, after writing the script,\n# replace the plotting line",
+        "detail": "examples.examplescripts.exampleDrawPicked",
         "documentation": {}
     },
     {
