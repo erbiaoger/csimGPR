@@ -1,3 +1,5 @@
+.DS_Store
+.vscode/
 csimGPR/__pycache__/
 examples/test_LPR/
 build/
